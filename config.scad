@@ -11,12 +11,12 @@ cornerReinforcementSize = 4;
 
 outerWallWidth = 1;
 
-floorWidth = 2;
+floorWidth = 1;
 
 /* -------- Inner walls --------- */
 innerWallPatternFile = "patterns/2x2.svg";
 
-innerWallWidth = 1;
+innerWallWidth = 0.6;
 
 // Inner walls don't have to go up to the whole tray height. This number states how many millimeters are the inner walls below the tray height.
 innerWallClearance = 0;
@@ -35,7 +35,7 @@ horizontalMountBaseWidth = 2;
 horizontalMountExtWidth = 4;
 
 // Distance between male and female part of the connector
-horizontalMountConenctorDistance = 20;
+horizontalMountConenctorDistance = 16;
 
 // Height of the wedge for horizontal mounts on the bottom side (to prevent needing supports)
 horizontalMountKickIn = 3;
@@ -45,6 +45,19 @@ horizontalMountKickOut = 1;
 
 /* -------------- Vertical mount -------------------- */
 verticalMountHeight = 1;
-verticalMountWidth = 0.5;
-verticalMountClearance = 0.4;
+
+verticalMountWidth = 1;
+
+verticalMountLength = 10;
+
+// How far away from the outer shell are the vertical mounts
+verticalMountInset = 2;
+
+// How much extra vertical space is in the female vertical mount
+verticalMountClearance = 0.5;
+
+// How much extra horizontal space is in the female vertical mount
 verticalMountTolerance = 0.5;
+
+// Plastic around the vertical mount hole
+verticalMountReinforcementDistance = 0.5;

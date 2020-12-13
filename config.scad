@@ -4,7 +4,7 @@
 unitSize = [80, 80, 20];
 
 // How many units the current tray consists of
-unitCount = [2, 1, 2];
+unitCount = [1, 1, 1];
 
 // Size of the wedges in the corners
 cornerReinforcementSize = 4;
@@ -35,10 +35,16 @@ horizontalMountBaseWidth = 2;
 horizontalMountExtWidth = 4;
 
 // Distance between male and female part of the connector
-horizontalMountConenctorDistance = 16;
+horizontalMountConenctorDistance = 20;
 
 // Height of the wedge for horizontal mounts on the bottom side (to prevent needing supports)
 horizontalMountKickIn = 3;
 
 // Height of the wedge for horizontal mounts on the top side (so the thing isn't that sharp)
 horizontalMountKickOut = 1;
+
+/* -------------- Vertical mount -------------------- */
+verticalMountHeight = 1;
+verticalMountWidth = 0.5;
+verticalMountClearance = 0.4;
+verticalMountTolerance = 0.5;

@@ -24,3 +24,21 @@ innerWallClearance = 0;
 /* ----------- Horizontal mount ----------------- */
 // How many extra free vertical space to allow better horizontal mount in-sliding
 horizontalMountClearance = 1;
+
+// How much free space in the horizontal mount sliders
+horizontalMountTolerance = 0.4;
+
+horizontalMountDepth = 2;
+
+horizontalMountBaseWidth = 2;
+
+horizontalMountExtWidth = 4;
+
+// Distance between male and female part of the connector
+horizontalMountConenctorDistance = 16;
+
+// Height of the wedge for horizontal mounts on the bottom side (to prevent needing supports)
+horizontalMountKickIn = 3;
+
+// Height of the wedge for horizontal mounts on the top side (so the thing isn't that sharp)
+horizontalMountKickOut = 1;

@@ -1,5 +1,3 @@
-include <config.scad>
-
 absTraySize = [
 	unitSize[0] * unitCount[0],
 	unitSize[1] * unitCount[1],
@@ -148,5 +146,5 @@ module verticalMountsIncl() {
 }
 module verticalMountsExcl() {
 	// Female bottom
-	linear_extrude(verticalMountHeight + verticalMountClearance) verticalMountsProfile();
+	linear_extrude(verticalMountHeight + verticalMountClearance) offset(delta=verticalMountTolerance) verticalMountsProfile();
 }

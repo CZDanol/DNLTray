@@ -20,8 +20,12 @@ drawerWallWidth = 1;
 drawerFloorWidth = 1;
 drawerNotchLength = 1;
 drawerNotchPosition = 10;
-drawerNotchDepth = 1;
+drawerNotchDepth = 0.4;
 drawerNotchTolerance = 0.5;
+drawerHandleOffset = 5;
+drawerHandlePos = 12;
+drawerHandleSize = 10;
+drawerHandleWidth = 1;
 
 module drawerRails(tolerance=false, holder=false) {
 	hdrh = drawerRailHeight / 2;
@@ -71,9 +75,19 @@ module drawerInnerWalls() {
 	}
 }
 
+module drawerHandle() {
+	handlePoints = [[0, 0], [0, drawerHandleSize], [drawerHandleSize, 0]];
+	width = drawerWidth - drawerHandleOffset * 2;
+
+	translate([0, drawerLength / 2 + drawerSideOffset / 2, drawerBottomOffset + drawerHandlePos]) rotate([0, 90, 0]) difference() {
+		linear_extrude(width, center=true) polygon(handlePoints);
+		translate([-drawerHandleWidth, 0, 0]) linear_extrude(width - drawerHandleWidth * 2, center=true) polygon(handlePoints);
+	}
+}
+
 /* -------- Inner wall/compartments --------- */
 
-difference() {
+/*difference() {
 	union() {
 		componentFloor();
 		outerWall();
@@ -85,11 +99,14 @@ difference() {
 
 	verticalMountsExcl();
 	drawerHoleExcl();
-}
+}*/
 
 // Drawer
 translate([0, 0, 50]) {
 	drawerRails();
 	drawerShell();
 	drawerInnerWalls();
+	drawerHandle();
 }
+
+labelHolder();

@@ -1,3 +1,8 @@
+labelWidth = 38;
+labelHeight = 10;
+labelDepth = 0.5;
+labelHolderWidth = 0.6;
+
 absComponentSize = [
 	unitSize[0] * unitCount[0],
 	unitSize[1] * unitCount[1],
@@ -147,4 +152,17 @@ module verticalMountsIncl() {
 module verticalMountsExcl() {
 	// Female bottom
 	linear_extrude(verticalMountHeight + verticalMountClearance) offset(delta=verticalMountTolerance) verticalMountsProfile();
+}
+
+module labelHolder() {
+	translate([0, 0, -labelHeight/2]) rotate([-90, 0, 0]) {
+		difference() {
+			linear_extrude(labelDepth + labelHolderWidth) difference() {
+				square([labelWidth + labelHolderWidth * 2, labelHeight], center=true);
+				square([labelWidth - labelHolderWidth * 2, labelHeight], center=true);
+			}
+			linear_extrude(labelDepth) square([labelWidth, labelHeight], center=true);
+		}
+		translate([0, labelHeight/2, 0]) rotate([0, 90, 0]) linear_extrude(labelWidth + labelHolderWidth * 2, center=true) polygon([[0, 0], [-labelHolderWidth - labelDepth, 0], [0, labelHolderWidth]]);
+	}
 }

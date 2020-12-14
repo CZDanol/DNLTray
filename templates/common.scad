@@ -1,7 +1,8 @@
-labelWidth = 38;
+labelWidth = 60;
 labelHeight = 10;
 labelDepth = 0.5;
 labelHolderWidth = 0.6;
+labelHolderRamp = 1;
 
 absComponentSize = [
 	unitSize[0] * unitCount[0],
@@ -159,10 +160,10 @@ module labelHolder() {
 		difference() {
 			linear_extrude(labelDepth + labelHolderWidth) difference() {
 				square([labelWidth + labelHolderWidth * 2, labelHeight], center=true);
-				square([labelWidth - labelHolderWidth * 2, labelHeight], center=true);
+				translate([0, -labelHolderWidth / 2]) square([labelWidth - labelHolderWidth * 2, labelHeight - labelHolderWidth], center=true);
 			}
 			linear_extrude(labelDepth) square([labelWidth, labelHeight], center=true);
 		}
-		translate([0, labelHeight/2, 0]) rotate([0, 90, 0]) linear_extrude(labelWidth + labelHolderWidth * 2, center=true) polygon([[0, 0], [-labelHolderWidth - labelDepth, 0], [0, labelHolderWidth]]);
+		translate([0, labelHeight/2, 0]) rotate([0, 90, 0]) linear_extrude(labelWidth + labelHolderWidth * 2, center=true) polygon([[0, 0], [-labelHolderWidth - labelDepth, 0], [0, labelHolderRamp]]);
 	}
 }

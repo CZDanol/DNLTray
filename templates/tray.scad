@@ -9,15 +9,17 @@ module innerWall() {
 	}
 }
 
-difference() {
-	union() {
-		componentFloor();
-		outerWall();
-		cornerReinforcements();
-		innerWall();
-		horizontalMounts();
-		verticalMountsIncl();
-	}
+rotate([0, 0, 180]) {
+	difference() {
+		union() {
+			componentFloor();
+			outerWall();
+			cornerReinforcements();
+			innerWall();
+			horizontalMounts();
+			verticalMountsIncl();
+		}
 
-	verticalMountsExcl();
+		verticalMountsExcl();
+	}
 }

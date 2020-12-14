@@ -62,7 +62,7 @@ def compileScad(baseDir, fileName, cfg, template):
 	makeFileDir(stlFileName)
 	makeFileDir(previewFileName)
 
-	template = os.path.relpath(F"{template}.scad", scadDir)
+	template = os.path.relpath(F"templates/{template}.scad", scadDir)
 	cfg["innerWallPatternFile"] = os.path.relpath("patterns/" + cfg["innerWallPatternFile"], scadDir)
 	cfgStr = configStr(cfg)
 
@@ -210,15 +210,16 @@ def main():
 					cfg["unitCount"][2] = unitCountZ
 
 					unitCountStr = F"{unitCountX}{unitCountY}{unitCountZ}"
+					unitCountDirStr = F"size_{unitCountX}x{unitCountY}x{unitCountZ}"
 
-					innerWallClearances = [
+					innerWallPercentageHeights = [
 						{
-							"name": "FULL",
-							"val": 0
+							"name": "F",
+							"val": 1
 						},
 						{
-							"name": "HALF",
-							"val": cfg["unitSize"][2] * unitCountZ / 2
+							"name": "H",
+							"val": 0.5
 						}
 					]
 
@@ -226,18 +227,18 @@ def main():
 						cfg["pattern"] = pattern
 						patternName = os.path.basename(os.path.splitext(pattern)[0])
 
-						for innerWallClearance in innerWallClearances:
-							cfg["innerWallClearance"] = innerWallClearance["val"]
+						for innerWallPercentageHeight in innerWallPercentageHeights:
+							cfg["innerWallPercentageHeight"] = innerWallPercentageHeight["val"]
 							cfg["innerWallPatternFile"] = pattern
 
-							innerWallClearanceName = innerWallClearance["name"]
+							iwphn = innerWallPercentageHeight["name"]
 
 							# Tray - no need for swapped width/height as they are symmetrical
 							if unitCountX >= unitCountY:
 								executor.submit(compileScad,
-								F"{outputDir}/{systemDirName}/trays/{unitCountStr}",
-								F"TRAY_{systemName}{unitCountStr}_{innerWallClearanceName}_{patternName}",
-								copy.deepcopy(cfg), "template_tray")
+								F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}",
+								F"{systemName}_TRAY{unitCountStr}{iwphn}_{patternName}",
+								copy.deepcopy(cfg), "tray")
 
 	executor.shutdown()
 

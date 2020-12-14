@@ -26,24 +26,24 @@ adjCornerPositions = [
 
 rotatedDimensions = [1, 0, 1, 0];
 
-module trayPerimeter() {
+module componentPerimeter() {
 	square([adjComponentSize[0], adjComponentSize[1]], true);
 }
 
 module compartmentsProfile() {
-	import(innerWallPatternFile, center=true);
+	import(innerWallPatternFile, center=true, convexity=10);
 }
 
 /* -------- Floor --------- */
-module trayFloor() {
-	linear_extrude(floorWidth) trayPerimeter();
+module componentFloor() {
+	linear_extrude(floorWidth) componentPerimeter();
 }
 
 /* -------- Outer wall --------- */
 module outerWall() {
-	linear_extrude(absComponentSize[2]) difference() {
-		trayPerimeter();
-		offset(delta=-outerWallWidth) trayPerimeter();
+	linear_extrude(absComponentSize[2], convexity=10) difference() {
+		componentPerimeter();
+		offset(delta=-outerWallWidth) componentPerimeter();
 	}
 }
 
@@ -64,8 +64,8 @@ module horizontalMountProfile() {
 	bw = horizontalMountBaseWidth/2;
 	polygon([[0, bw], [dp, ew], [dp, -ew], [0, -bw]]);
 }
-module horizontalMounts() {
-	for(a = [0 : 3]) translate(absCornerPositions[a]) rotate(a * 90) {
+module horizontalMounts(skipFront = false) {
+	for(a = [0 : 3]) if(a != 1 || !skipFront) translate(absCornerPositions[a]) rotate(a * 90) {
 		d = rotatedDimensions[a];
 		dUnitSize = unitSize[d];
 		hUnitSize = unitSize[2];
@@ -141,7 +141,7 @@ module verticalMountsIncl() {
 	// Bottom reinforcement
 	linear_extrude(verticalMountHeight + verticalMountClearance + verticalMountReinforcementDistance) intersection() {
 		offset(delta=verticalMountReinforcementDistance) verticalMountsProfile();
-		trayPerimeter();
+		componentPerimeter();
 	}
 }
 module verticalMountsExcl() {

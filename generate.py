@@ -44,15 +44,16 @@ def writeFile(file, content):
 	f.write(content)
 	f.close()
 
-	print("Created " + file)
-
 def compileScad(file):
-	subprocess.run([
-		sys.argv[1],
-		file + ".scad",
-		"--o", file + ".stl",
-		"--o", file + ".png",
-		])
+	# Create STL
+	subprocess.run([sys.argv[1], file + ".scad", "--o={}.stl".format(file)])
+
+	# Create preview of the STL
+	# We create a preview scad importing the stl, should be faster than having to compile the original scad
+	writeFile(file + ".preview.scad", "import(\"{}.stl\");".format(os.path.basename(file).replace("\\", "\\\\")))
+	subprocess.run([sys.argv[1], file + ".preview.scad", "--o={}.png".format(file), "--colorscheme=BeforeDawn"])
+	os.remove(file + ".preview.scad")
+
 	print("Compiled " + file)
 
 def main():

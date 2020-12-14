@@ -1,40 +1,16 @@
 include <common.scad>;
 
-drawerBottomOffset = floorWidth;
-drawerTopOffset = 2;
-drawerSideOffset = outerWallWidth + 2;
-
-drawerTopTolerance = 0.5;
-drawerSideTolerance = 0.5;
-
 drawerWidth = adjComponentSize[0] - drawerSideOffset * 2;
 drawerHeight = adjComponentSize[2] - drawerTopOffset - drawerBottomOffset;
 drawerLength = adjComponentSize[1] - drawerSideOffset;
-
-drawerRailPos = 10;
-drawerRailHeight = 4;
-drawerRailDepth = 2;
-drawerRailTolerance = 0.3;
-drawerRailHolderWedge = 2;
-drawerWallWidth = 1;
-drawerFloorWidth = 1;
-drawerNotchLength = 1;
-drawerNotchPosition = 10;
-drawerNotchDepth = 0.5;
-drawerNotchTolerance = 0.5;
-drawerHandleOffset = 5;
-drawerHandlePos = 12;
-drawerHandleSize = 10;
-drawerHandleWidth = 1;
-drawerLabelHolderOffset = 2;
 
 module drawerRails(tolerance=false, holder=false) {
 	hdrh = drawerRailHeight / 2;
 	to = hdrh + 1;
 
-	railPoints = [[0, -hdrh], [drawerRailDepth, 0], [0, hdrh]];
-	holderPoints = [[0, -to], [drawerRailDepth, -to - drawerRailHolderWedge], [drawerRailDepth, to + drawerRailHolderWedge], [0, to]];
-	notchPoints = [[0, -hdrh - drawerNotchDepth], [drawerRailDepth, 0], [0, hdrh]];
+	railPoints = [[0, -hdrh], [drawerRailWidth, 0], [0, hdrh]];
+	holderPoints = [[0, -to], [drawerRailWidth, -to - drawerRailHolderWedge], [drawerRailWidth, to + drawerRailHolderWedge], [0, to]];
+	notchPoints = [[0, -hdrh - drawerNotchDepth], [drawerRailWidth, 0], [0, hdrh]];
 
 	delta = tolerance ? drawerRailTolerance : 0;
 	points = holder ? holderPoints : railPoints;

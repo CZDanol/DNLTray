@@ -167,3 +167,15 @@ module labelHolder() {
 		translate([0, labelHeight/2, 0]) rotate([0, 90, 0]) linear_extrude(labelWidth + labelHolderWidth * 2, center=true) polygon([[0, 0], [-labelHolderWidth - labelDepth, 0], [0, labelHolderRamp]]);
 	}
 }
+
+module modelLabel() {
+	sz = 2.5;
+	spc = 4;
+	fnt = "Andale Mono";
+
+	rotate([0, 180, 0]) linear_extrude(0.6, center=true) {
+		translate([0, 0, 0]) text(modelName, size=sz, valign="top", font=fnt);
+		translate([0, -spc, 0]) text(version, size=sz, valign="top", font=fnt);
+		translate([0, -spc*2, 0]) text("DESIGNED BY DANOL", size=sz, valign="top", font=fnt);
+	}
+}

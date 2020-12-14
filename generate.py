@@ -66,6 +66,7 @@ def compileScad(baseDir, fileName, cfg, template):
 
 		template = os.path.relpath(F"templates/{template}.scad", scadDir)
 		cfg["innerWallPatternFile"] = os.path.relpath("patterns/" + cfg["innerWallPatternFile"], scadDir)
+		cfg["modelName"] = fileName
 		cfgStr = configStr(cfg)
 
 		# Create the scad file
@@ -99,6 +100,9 @@ def main():
 	cfg = {
 		# CORE STUFF
 		# =======================
+
+		# ID of the current version
+		"version": "v0.9",
 
 		# Count of units in the tray, is dynamically changed
 		"unitCount": [0, 0, 0],
@@ -248,14 +252,13 @@ def main():
 	systems = [
 		{
 			"systemName": "A",
-			"unitSize": [80, 80, 15],
+			"unitSize": [30, 30, 15],
 			"horizontalMountConenctorDistance": 16
 		}
 	]
 	patterns = [p for p in os.listdir("patterns") if p.endswith(".svg")]
 
 	outputDir = "models"
-	minComponentHeightForDrawers = 30
 
 	executor = concurrent.futures.ThreadPoolExecutor()
 
@@ -280,16 +283,21 @@ def main():
 		systemName = cfg["systemName"]
 		systemDirName = "SYS_" + systemName
 
-		for unitCountX in [1, 2]:
+		for unitCountX in [1, 2, 3, 4]:
 			cfg["unitCount"][0] = unitCountX
 
-			for unitCountY in [1, 2]:
+			for unitCountY in [1, 2, 3, 4]:
 				cfg["unitCount"][1] = unitCountY
 
-				for unitCountZ in [1, 2, 3]:
+				for unitCountZ in [1, 2, 3, 4]:
 					cfg["unitCount"][2] = unitCountZ
 
-					componentHeight = cfg["unitSize"][2] * unitCountZ
+					componentSize = [
+						cfg["unitSize"][0] * unitCountX,
+						cfg["unitSize"][1] * unitCountY,
+						cfg["unitSize"][2] * unitCountZ
+					]
+					drawerEnabled = componentSize[2] >= 3
 
 					unitCountStr = F"{unitCountX}{unitCountY}{unitCountZ}"
 					unitCountDirStr = F"size_{unitCountX}x{unitCountY}x{unitCountZ}"
@@ -306,7 +314,7 @@ def main():
 					]
 
 					# Drawer tray
-					if componentHeight >= minComponentHeightForDrawers:
+					if drawerEnabled:
 						executor.submit(compileScad,
 						F"{outputDir}/{systemDirName}/drawer_trays",
 						F"{systemName}_DT{unitCountStr}",
@@ -326,17 +334,17 @@ def main():
 							if unitCountX >= unitCountY:
 								executor.submit(compileScad,
 								F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}",
-								F"{systemName}_TR{unitCountStr}{iwphn}_{patternName}",
+								F"{systemName}_T{unitCountStr}{iwphn}_{patternName}",
 								copy.deepcopy(cfg), "tray")
 
 							# Drawer
-							if componentHeight >= minComponentHeightForDrawers:
+							if drawerEnabled:
 								executor.submit(compileScad,
 								F"{outputDir}/{systemDirName}/drawers/{unitCountDirStr}",
-								F"{systemName}_DR{unitCountStr}{iwphn}_{patternName}",
+								F"{systemName}_D{unitCountStr}{iwphn}_{patternName}",
 								copy.deepcopy(cfg), "drawer")
 
 	executor.shutdown()
 
 
-main()
+main(),

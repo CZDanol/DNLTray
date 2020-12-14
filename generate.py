@@ -172,6 +172,9 @@ def main():
 						}
 					]
 
+					dirStructure = "{}/{}x{}x{}".format(cfg["systemName"], unitCountX, unitCountY, unitCountZ)
+					readmeContent = ""
+
 					for pattern in patterns:
 						cfg["pattern"] = pattern
 						patternBaseName = os.path.basename(os.path.splitext(pattern)[0])
@@ -179,16 +182,15 @@ def main():
 						for innerWallClearance in innerWallClearances:
 							cfg["innerWallClearance"] = innerWallClearance["val"]
 
-							fileDir = "{}/{}x{}x{}".format(cfg["systemName"], unitCountX, unitCountY, unitCountZ)
-							filename = "{}__{}__{}".format(fileDir.replace("/", "__"), patternBaseName, innerWallClearance["name"])
-							filePath = "data/{}/{}".format(fileDir, filename)
-							filePathDir = os.path.dirname(filePath)
+							fileName = "{}__{}__{}".format(dirStructure.replace("/", "__"), patternBaseName, innerWallClearance["name"])
+							fileDir = "data/" + dirStructure
+							filePath = "{}/{}".format(fileDir, fileName)
 
-							cfg["innerWallPatternFile"] = os.path.relpath("patterns/" + pattern, filePathDir)
+							cfg["innerWallPatternFile"] = os.path.relpath("patterns/" + pattern, fileDir)
 							configString = configStr(cfg)
 
 							# Create the scad file
-							writeFile(filePath + ".scad", configString + "include <{}>;".format(os.path.relpath("template_tray.scad", filePathDir)))
+							writeFile(filePath + ".scad", configString + "include <{}>;".format(os.path.relpath("template_tray.scad", fileDir)))
 
 							# Compile the scad file
 							executor.submit(compileScad, filePath)

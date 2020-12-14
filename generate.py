@@ -6,7 +6,20 @@ import numbers
 import shutil
 import time
 import subprocess
+import copy
+import threading
 import concurrent.futures
+
+mutex = threading.Lock()
+
+def makeFileDir(file):
+	while True:
+		try:
+			os.makedirs(os.path.dirname(file), exist_ok=True)
+			break
+
+		except PermissionError:
+			continue
 
 def configVal(key, val):
 	if isinstance(val, numbers.Number):
@@ -32,29 +45,50 @@ def configStr(config):
 	return result
 
 def writeFile(file, content):
-	while True:
-		try:
-			os.makedirs(os.path.dirname(file), exist_ok=True)
-			break
-
-		except PermissionError:
-			continue
-
+	makeFileDir(file)
 	f = open(file, "w")
 	f.write(content)
 	f.close()
 
-def compileScad(file):
+def compileScad(baseDir, fileName, cfg, template):
+	scadDir = F"{baseDir}/scad"
+
+	scadFileName = F"{scadDir}/{fileName}.scad"
+	stlFileName = F"{baseDir}/stl/{fileName}.stl"
+	previewScadFileName = F"{baseDir}/{fileName}.preview.scad"
+	previewFileName = F"{baseDir}/png/{fileName}.png"
+
+	makeFileDir(scadFileName)
+	makeFileDir(stlFileName)
+	makeFileDir(previewFileName)
+
+	template = os.path.relpath(F"{template}.scad", scadDir)
+	cfg["innerWallPatternFile"] = os.path.relpath("patterns/" + cfg["innerWallPatternFile"], scadDir)
+	cfgStr = configStr(cfg)
+
+	# Create the scad file
+	writeFile(scadFileName, F"{cfgStr}\ninclude <{template}>;")
+
 	# Create STL
-	subprocess.run([sys.argv[1], file + ".scad", "--o={}.stl".format(file)])
+	stlProc = subprocess.run([sys.argv[1], scadFileName, F"--o={stlFileName}"], capture_output=True)
+	mutex.acquire()
+	print("Compiled " + fileName)
+
+	if len(stlProc.stdout):
+		print(stlProc.stdout)
+
+	if len(stlProc.stderr):
+		print(stlProc.stderr)
+
+	mutex.release()
 
 	# Create preview of the STL
 	# We create a preview scad importing the stl, should be faster than having to compile the original scad
-	writeFile(file + ".preview.scad", "import(\"{}.stl\");".format(os.path.basename(file).replace("\\", "\\\\")))
-	subprocess.run([sys.argv[1], file + ".preview.scad", "--o={}.png".format(file), "--colorscheme=BeforeDawn"])
-	os.remove(file + ".preview.scad")
+	writeFile(previewScadFileName, "import(\"{}\");".format(os.path.relpath(stlFileName, baseDir).replace("\\", "\\\\")))
+	subprocess.run([sys.argv[1], previewScadFileName, F"--o={previewFileName}.png", "--colorscheme=BeforeDawn"], capture_output=True)
+	os.remove(previewScadFileName)
 
-	print("Compiled " + file)
+	print("Compiled " + fileName)
 
 def main():
 	cfg = {
@@ -130,27 +164,41 @@ def main():
 		"verticalMountTolerance": 0.3,
 
 		# Plastic around the vertical mount hole
-		"verticalMountReinforcementDistance": 0.5,
+		"verticalMountReinforcementDistance": 1,
 	}
 	systems = [
 		{
 			"systemName": "A",
-			"unitSize": [40, 40, 20],
-			"horizontalMountConenctorDistance": 8
+			"unitSize": [80, 80, 15],
+			"horizontalMountConenctorDistance": 16
 		}
 	]
 	patterns = [p for p in os.listdir("patterns") if p.endswith(".svg")]
 
+	outputDir = "models"
+
 	executor = concurrent.futures.ThreadPoolExecutor()
 
 	# Delete the "data" outputs directory
-	if os.path.exists("data"):
-		shutil.rmtree("data")
+	if os.path.exists("models"):
+		print("Deleting old models...")
+		while True:
+			try:
+				shutil.rmtree("models")
+				break
+
+			except OSError:
+				continue
+
+		print("Old models deleted...")
 
 	# Generate all the stuff
 	for system in systems:
 		for key in system:
 			cfg[key] = system[key]
+
+		systemName = cfg["systemName"]
+		systemDirName = "SYS_" + systemName
 
 		for unitCountX in [1, 2]:
 			cfg["unitCount"][0] = unitCountX
@@ -160,6 +208,8 @@ def main():
 
 				for unitCountZ in [1]:#[1, 2, 3]:
 					cfg["unitCount"][2] = unitCountZ
+
+					unitCountStr = F"{unitCountX}{unitCountY}{unitCountZ}"
 
 					innerWallClearances = [
 						{
@@ -172,28 +222,22 @@ def main():
 						}
 					]
 
-					dirStructure = "{}/{}x{}x{}".format(cfg["systemName"], unitCountX, unitCountY, unitCountZ)
-					readmeContent = ""
-
 					for pattern in patterns:
 						cfg["pattern"] = pattern
-						patternBaseName = os.path.basename(os.path.splitext(pattern)[0])
+						patternName = os.path.basename(os.path.splitext(pattern)[0])
 
 						for innerWallClearance in innerWallClearances:
 							cfg["innerWallClearance"] = innerWallClearance["val"]
+							cfg["innerWallPatternFile"] = pattern
 
-							fileName = "{}__{}__{}".format(dirStructure.replace("/", "__"), patternBaseName, innerWallClearance["name"])
-							fileDir = "data/" + dirStructure
-							filePath = "{}/{}".format(fileDir, fileName)
+							innerWallClearanceName = innerWallClearance["name"]
 
-							cfg["innerWallPatternFile"] = os.path.relpath("patterns/" + pattern, fileDir)
-							configString = configStr(cfg)
-
-							# Create the scad file
-							writeFile(filePath + ".scad", configString + "include <{}>;".format(os.path.relpath("template_tray.scad", fileDir)))
-
-							# Compile the scad file
-							executor.submit(compileScad, filePath)
+							# Tray - no need for swapped width/height as they are symmetrical
+							if unitCountX >= unitCountY:
+								executor.submit(compileScad,
+								F"{outputDir}/{systemDirName}/trays/{unitCountStr}",
+								F"TRAY_{systemName}{unitCountStr}_{innerWallClearanceName}_{patternName}",
+								copy.deepcopy(cfg), "template_tray")
 
 	executor.shutdown()
 

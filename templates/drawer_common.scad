@@ -46,7 +46,7 @@ module drawerShell() {
 
 module drawerInnerWalls() {
 	// We intersect with the tray perimeter so that the offset lines do not go outside
-	translate([0, drawerSideOffset/2, drawerBottomOffset]) linear_extrude(drawerHeight * innerWallPercentageHeight) offset(delta=innerWallWidth/2) intersection() {
+	translate([0, drawerSideOffset/2, drawerBottomOffset]) linear_extrude(drawerHeight * innerWallPercentageHeight, convexity=20) offset(delta=innerWallWidth/2) intersection() {
 		offset(delta=+0.0001) resize([drawerWidth - drawerWallWidth * 2 + 0.002, drawerLength - drawerWallWidth * 2 + 0.002, 0], auto=true) compartmentsProfile();
 		offset(delta=-outerWallWidth) square([drawerWidth, drawerLength], center=true);
 	}

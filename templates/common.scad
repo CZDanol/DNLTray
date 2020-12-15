@@ -31,7 +31,7 @@ module componentPerimeter() {
 }
 
 module compartmentsProfile() {
-	import(innerWallPatternFile, center=true, convexity=10);
+	rotate([0, 0, innerWallRotation]) import(innerWallPatternFile, center=true, convexity=10);
 }
 
 /* -------- Floor --------- */
@@ -150,7 +150,7 @@ module verticalMountsExcl() {
 }
 
 module labelHolder() {
-	translate([0, 0, -labelHeight/2]) rotate([-90, 0, 0]) {
+	if(adjComponentSize[2] >= 30)	translate([0, 0, -labelHeight/2]) rotate([-90, 0, 0]) {
 		difference() {
 			linear_extrude(labelDepth + labelHolderWidth) difference() {
 				square([labelWidth + labelHolderWidth * 2, labelHeight], center=true);

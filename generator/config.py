@@ -5,8 +5,13 @@ systems = [
 		"systemName": "A",
 		"unitSize": [25, 25, 15],
 		"horizontalMountConenctorDistance": 6,
-		"horizontalUnitCountOptions": [2, 3, 4],
-		"verticalUnitCountOptions": [1, 2, 3]
+		"horizontalUnitCountOptions": [
+			[2, 2],
+			[3, 2],
+			[4, 4], [4, 2], 
+			[8, 4], [8, 8]
+		],
+		"verticalUnitCountOptions": [1, 2, 3, 4]
 	}
 ]
 
@@ -17,7 +22,7 @@ cfg = {
 	# =======================
 
 	# ID of the current version
-	"version": "v0.9",
+	"version": "v0.9.1",
 
 	# Count of units in the tray, is dynamically changed
 	"unitCount": [0, 0, 0],
@@ -60,6 +65,9 @@ cfg = {
 	#  Inner walls don't have to go up to the whole tray height. This number represents a ratio of the total component height where the inner walls go.
 	"innerWallPercentageHeight": 1,
 
+	# Rotation (in degrees) of the inner walls profile
+	"innerWallRotation": 0,
+
 	# HORIZONTAL MOUNTS
 	# =======================
 
@@ -97,7 +105,7 @@ cfg = {
 	"verticalMountInset": 2,
 
 	# How much extra vertical space is in the female vertical mount
-	"verticalMountClearance": 0.5,
+	"verticalMountClearance": 0.4,
 
 	# How much extra horizontal space is in the female vertical mount
 	"verticalMountTolerance": 0.3,
@@ -113,7 +121,7 @@ cfg = {
 	"drawerBottomOffset": 2,
 
 	# Distance of the top of the drawer from the top of the component
-	"drawerTopOffset": 2,
+	"drawerTopOffset": 1,
 
 	# Distance of the drawer from the side walls (outer edge)
 	"drawerSideOffset": 4,
@@ -159,7 +167,7 @@ cfg = {
 	"drawerNotchPosition": 5,
 
 	# Depth of the notch - the higher the value, the harder it is to pull the drawer out
-	"drawerNotchDepth": 0.5,
+	"drawerNotchDepth": 0.8,
 
 	# How much the notch slot is larger than the notch
 	"drawerNotchTolerance": 0.5,
@@ -171,7 +179,7 @@ cfg = {
 	"drawerHandleOffset": 5,
 
 	# Z position of the handle
-	"drawerHandlePos": 12,
+	"drawerHandlePos": 10.5,
 
 	# Size of the handle
 	"drawerHandleSize": 10,

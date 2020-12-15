@@ -2,10 +2,11 @@ import argparse
 import concurrent.futures
 import shutil
 import copy
+import re
 
 from config import *
-from funcs import *
-from cargs import *
+import funcs
+from cargs import args
 
 def main():
 	outputDir = "models"
@@ -33,10 +34,18 @@ def main():
 		systemName = cfg["systemName"]
 		systemDirName = "SYS_" + systemName
 
-		for unitCountX in system["horizontalUnitCountOptions"]:
-			cfg["unitCount"][0] = unitCountX
+		for horSizeOpt in system["horizontalUnitCountOptions"]:
+			ucVariants = [horSizeOpt]
 
-			for unitCountY in system["horizontalUnitCountOptions"]:
+			# Add inverse option if it is not square
+			if horSizeOpt[0] != horSizeOpt[1]:
+				ucVariants.append([horSizeOpt[1], horSizeOpt[0]])
+			
+			for unitCountXY in ucVariants:
+				unitCountX = unitCountXY[0]
+				unitCountY = unitCountXY[1]
+
+				cfg["unitCount"][0] = unitCountX
 				cfg["unitCount"][1] = unitCountY
 
 				for unitCountZ in system["verticalUnitCountOptions"]:
@@ -47,7 +56,7 @@ def main():
 						cfg["unitSize"][1] * unitCountY,
 						cfg["unitSize"][2] * unitCountZ
 					]
-					drawerEnabled = componentSize[2] >= 30
+					drawerEnabled = True # componentSize[2] >= 30
 
 					unitCountStr = F"{unitCountX}{unitCountY}{unitCountZ}"
 					unitCountDirStr = F"size_{unitCountX}x{unitCountY}x{unitCountZ}"
@@ -65,33 +74,43 @@ def main():
 
 					# Drawer tray
 					if drawerEnabled:
-						executor.submit(compileScad,
+						executor.submit(funcs.compileScad,
 						F"{outputDir}/{systemDirName}/drawer_trays",
-						F"{systemName}_DT{unitCountStr}",
+						F"{systemName}_W{unitCountStr}",
 						copy.deepcopy(cfg), "drawer_tray")
 
 					for pattern in patterns:
-						cfg["pattern"] = pattern
-						patternName = os.path.basename(os.path.splitext(pattern)[0])
+						patternBaseName = os.path.basename(os.path.splitext(pattern)[0])
+						patternMatch = re.fullmatch("(.*?)(?:_x([A-Z]*))?", patternBaseName)
+						patternName = patternMatch.group(1)
+						patternFlags = str(patternMatch.group(2))
 
-						for innerWallPercentageHeight in innerWallPercentageHeights:
-							cfg["innerWallPercentageHeight"] = innerWallPercentageHeight["val"]
-							cfg["innerWallPatternFile"] = pattern
+						rotations = [(0, "")]
+						if "R" in patternFlags:
+							rotations.append((90, "_R"))
 
-							iwphn = innerWallPercentageHeight["name"]
+						for rot in rotations:
+							rotAngle, rotStr = rot
+							cfg["innerWallRotation"] = rotAngle
 
-							# Tray - no need for swapped width/height as they are symmetrical
-							if unitCountX >= unitCountY:
-								executor.submit(compileScad,
-								F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}",
-								F"{systemName}_T{unitCountStr}{iwphn}_{patternName}",
-								copy.deepcopy(cfg), "tray")
+							for innerWallPercentageHeight in innerWallPercentageHeights:
+								cfg["innerWallPercentageHeight"] = innerWallPercentageHeight["val"]
+								cfg["innerWallPatternFile"] = pattern
 
-							# Drawer
-							if drawerEnabled:
-								executor.submit(compileScad,
-								F"{outputDir}/{systemDirName}/drawers/{unitCountDirStr}",
-								F"{systemName}_D{unitCountStr}{iwphn}_{patternName}",
-								copy.deepcopy(cfg), "drawer")
+								innerHeightName = innerWallPercentageHeight["name"]
+
+								# Tray - no need for swapped width/height as they are symmetrical
+								if unitCountX >= unitCountY and (unitCountX != unitCountY or rot[0] == 0):
+									executor.submit(funcs.compileScad,
+									F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}",
+									F"{systemName}_T{unitCountStr}{innerHeightName}_{patternName}{rotStr}",
+									copy.deepcopy(cfg), "tray")
+
+								# Drawer
+								if drawerEnabled:
+									executor.submit(funcs.compileScad,
+									F"{outputDir}/{systemDirName}/drawers/{unitCountDirStr}",
+									F"{systemName}_D{unitCountStr}{innerHeightName}_{patternName}{rotStr}",
+									copy.deepcopy(cfg), "drawer")
 
 	executor.shutdown()

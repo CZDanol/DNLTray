@@ -25,10 +25,7 @@ System contains:
 - Always put four rectangles around the pattern (determining position of outer walls)
 
 ## To-do
-- Vertical mount wedge
-- Explicit size combinations list (both tray and drawer)
 - Lids
-- Rotated pattern variants (drawers + trays if they are not square)
 - Side frames (vertically stackable)
   - Corner side frames - not necessary (you can just use two separate frames)
   - Double-sisded frames

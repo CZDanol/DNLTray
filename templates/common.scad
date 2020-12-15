@@ -1,9 +1,3 @@
-labelWidth = 60;
-labelHeight = 10;
-labelDepth = 0.5;
-labelHolderWidth = 0.6;
-labelHolderRamp = 1;
-
 absComponentSize = [
 	unitSize[0] * unitCount[0],
 	unitSize[1] * unitCount[1],
@@ -160,7 +154,7 @@ module labelHolder() {
 		difference() {
 			linear_extrude(labelDepth + labelHolderWidth) difference() {
 				square([labelWidth + labelHolderWidth * 2, labelHeight], center=true);
-				translate([0, -labelHolderWidth / 2]) square([labelWidth - labelHolderWidth * 2, labelHeight - labelHolderWidth], center=true);
+				translate([0, -labelHolderInset / 2]) square([labelWidth - labelHolderInset * 2, labelHeight - labelHolderInset], center=true);
 			}
 			linear_extrude(labelDepth) square([labelWidth, labelHeight], center=true);
 		}
@@ -169,13 +163,13 @@ module labelHolder() {
 }
 
 module modelLabel() {
-	sz = 2.5;
+	sz = 3;
 	spc = 4;
-	fnt = "Andale Mono";
+	fnt = "Arial Rounded MT Bold";
 
 	rotate([0, 180, 0]) linear_extrude(0.6, center=true) {
 		translate([0, 0, 0]) text(modelName, size=sz, valign="top", font=fnt);
 		translate([0, -spc, 0]) text(version, size=sz, valign="top", font=fnt);
-		translate([0, -spc*2, 0]) text("DESIGNED BY DANOL", size=sz, valign="top", font=fnt);
+		translate([0, -spc*2, 0]) text("BY DANOL", size=sz, valign="top", font=fnt);
 	}
 }

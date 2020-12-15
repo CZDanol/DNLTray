@@ -110,6 +110,21 @@ def main():
 		# Size of an atomic tray unit, dynamically changed
 		"unitSize": [0, 0, 0],
 
+		# LABEL
+		# ==========================
+		"labelWidth": 35,
+		"labelHeight": 10,
+		"labelDepth": 0.5,
+
+		# Width of the label holder frame
+		"labelHolderWidth": 0.6,
+
+		# How much paper the label holder hides
+		"labelHolderInset": 2,
+
+		# Size of the ramp on the bottom of the holder
+		"labelHolderRamp": 1,
+
 		# OUTER WALL
 		# =======================
 
@@ -204,7 +219,7 @@ def main():
 		"drawerRailWidth": 2,
 
 		# How much extra space is there in the drawer rail slots
-		"drawerRailTolerance": 0.3,
+		"drawerRailTolerance": 0.5,
 
 		# Size of the wedge on the bottom of the drawer rail slot (in the tray component)
 		"drawerRailHolderWedge": 2,
@@ -226,7 +241,7 @@ def main():
 		"drawerNotchLength": 1,
 
 		# Position of the notch -> distance from the front of the drawer
-		"drawerNotchPosition": 10,
+		"drawerNotchPosition": 5,
 
 		# Depth of the notch - the higher the value, the harder it is to pull the drawer out
 		"drawerNotchDepth": 0.5,
@@ -252,8 +267,10 @@ def main():
 	systems = [
 		{
 			"systemName": "A",
-			"unitSize": [30, 30, 15],
-			"horizontalMountConenctorDistance": 16
+			"unitSize": [25, 25, 15],
+			"horizontalMountConenctorDistance": 6,
+			"horizontalUnitCountOptions": [2, 3, 4],
+			"verticalUnitCountOptions": [1, 2, 3]
 		}
 	]
 	patterns = [p for p in os.listdir("patterns") if p.endswith(".svg")]
@@ -273,7 +290,7 @@ def main():
 			except OSError:
 				continue
 
-		print("Old models deleted...")
+		print("Old models deleted")
 
 	# Generate all the stuff
 	for system in systems:
@@ -283,13 +300,13 @@ def main():
 		systemName = cfg["systemName"]
 		systemDirName = "SYS_" + systemName
 
-		for unitCountX in [1, 2, 3, 4]:
+		for unitCountX in system["horizontalUnitCountOptions"]:
 			cfg["unitCount"][0] = unitCountX
 
-			for unitCountY in [1, 2, 3, 4]:
+			for unitCountY in system["horizontalUnitCountOptions"]:
 				cfg["unitCount"][1] = unitCountY
 
-				for unitCountZ in [1, 2, 3, 4]:
+				for unitCountZ in system["verticalUnitCountOptions"]:
 					cfg["unitCount"][2] = unitCountZ
 
 					componentSize = [
@@ -297,7 +314,7 @@ def main():
 						cfg["unitSize"][1] * unitCountY,
 						cfg["unitSize"][2] * unitCountZ
 					]
-					drawerEnabled = componentSize[2] >= 3
+					drawerEnabled = componentSize[2] >= 30
 
 					unitCountStr = F"{unitCountX}{unitCountY}{unitCountZ}"
 					unitCountDirStr = F"size_{unitCountX}x{unitCountY}x{unitCountZ}"

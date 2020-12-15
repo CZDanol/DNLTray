@@ -7,9 +7,10 @@ systems = [
 		"horizontalMountConenctorDistance": 6,
 		"horizontalUnitCountOptions": [
 			[2, 2],
-			[3, 2],
+			[3, 3], [3, 2],
 			[4, 4], [4, 2], 
-			[8, 4], [8, 8]
+			[6, 6], [6, 4], [6, 3],
+			[8, 8], [8, 6], [8, 4]
 		],
 		"verticalUnitCountOptions": [1, 2, 3, 4]
 	}

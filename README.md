@@ -1,4 +1,8 @@
-# WORK IN PROGRESS
+# Danol's Ultimate Organizer System
+**WORK IN PROGRESS**
+**Due to size limitations, the repository doesn't contain .stl files. A selection of them is available in releases. The rest you have to build yourself. Simply download this repository, open the appropriate scad file and compile it.**
+
+**You can see gallery of all components in the models/ folder.**
 
 ## Features
 System contains:
@@ -18,6 +22,10 @@ System contains:
 - If you intend to use the designs commercially, please contact me to negotiate a commission
 
 ## Customizing
+- Download the whole repo
+- Adjust stuff in the `generator/config.py` or in `templates/*.scad`
+- Run `python generate.py` with appropriate arguments (see `python generate.py --help`)
+- Profit
 
 ### Creating custom patterns
 - SVG file format
@@ -25,6 +33,7 @@ System contains:
 - Always put four rectangles around the pattern (determining position of outer walls)
 
 ## To-do
+- Zipping
 - Lids
 - Side frames (vertically stackable)
   - Corner side frames - not necessary (you can just use two separate frames)

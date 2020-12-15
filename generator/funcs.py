@@ -44,12 +44,38 @@ def configStr(config):
 
 def writeFile(file, content):
 	makeFileDir(file)
+
 	f = open(file, "w")
 	f.write(content)
 	f.close()
 
+def runProcess(args):
+	proc = subprocess.run(args, capture_output=True)
+	mutex.acquire()
+
+	if len(proc.stdout):
+		print("STDOUT " + str(args))
+		print(proc.stdout)
+
+	if len(proc.stderr) and proc.stderr != b"OpenGL Program Validation results:\r\nValidation successful.\r\n":
+		print("STDERR " + str(args))
+		print(proc.stderr)
+
+	mutex.release()
+
+def shouldGenerateFile(file):
+	result = not os.path.exists(file) or args.overwrite
+	if result:
+		makeFileDir(file)
+
+		mutex.acquire()
+		print(F"Generating '{file}'")
+		mutex.release()
+
+	return result
+
 def compileScad(baseDir, fileName, cfg, template):
-	if args.models and not any(re.fullmatch(m, fileName) for m in args.models):
+	if not any(re.fullmatch(m, fileName) for m in args.models):
 		return
 
 	try:
@@ -57,7 +83,6 @@ def compileScad(baseDir, fileName, cfg, template):
 
 		scadFileName = F"{scadDir}/{fileName}.scad"
 		stlFileName = F"{baseDir}/stl/{fileName}.stl"
-		previewScadFileName = F"{baseDir}/{fileName}.preview.scad"
 		previewFileName = F"{baseDir}/png/{fileName}.png"
 
 		template = os.path.relpath(F"templates/{template}.scad", scadDir)
@@ -65,39 +90,17 @@ def compileScad(baseDir, fileName, cfg, template):
 		cfg["modelName"] = fileName
 		cfgStr = configStr(cfg)
 
-		alreadyExists = os.path.exists(scadFileName)
-		if args.existingOnly and not alreadyExists:
-			return
-
-		if args.newOnly and alreadyExists:
-			return
-
 		# Create the scad file
-		writeFile(scadFileName, F"{cfgStr}\ninclude <{template}>;")
+		if args.scad and shouldGenerateFile(scadFileName):
+			writeFile(scadFileName, F"{cfgStr}\ninclude <{template}>;")
 
-		if args.scad:
-			makeFileDir(stlFileName)
+		# Create STL
+		if args.stl and shouldGenerateFile(stlFileName):
+			runProcess([args.compiler, scadFileName, F"--o={stlFileName}"])
 
-			# Create STL
-			stlProc = subprocess.run([args.scad, scadFileName, F"--o={stlFileName}"], capture_output=True)
-			mutex.acquire()
-			print("Compiled " + fileName)
-
-			if len(stlProc.stdout):
-				print(stlProc.stdout)
-
-			if len(stlProc.stderr):
-				print(stlProc.stderr)
-
-			mutex.release()
-
-			# Create png preview of the stl
-			makeFileDir(previewFileName)
-
-			# We create a preview scad importing the stl, should be faster than having to compile the original scad
-			writeFile(previewScadFileName, "import(\"{}\");".format(os.path.relpath(stlFileName, baseDir).replace("\\", "\\\\")))
-			subprocess.run([args.scad, previewScadFileName, F"--o={previewFileName}.png", "--colorscheme=BeforeDawn"], capture_output=True)
-			os.remove(previewScadFileName)
+		# Create png preview
+		if args.img and shouldGenerateFile(previewFileName):
+			runProcess([args.compiler, scadFileName, F"--o={previewFileName}", "--colorscheme=BeforeDawn", "--imgsize=256,256", "--quiet"])
 
 	except Exception:
 		traceback.print_exc()

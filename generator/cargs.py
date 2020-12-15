@@ -2,15 +2,27 @@ import argparse
 
 def parseArgs():
 	p = argparse.ArgumentParser("generate")
-	p.add_argument("--scad", "-s", type=str, default=None, help="Location of the OpenSCAD executable. If specified, script generates STL files and preview. If not, it only generates SCAD files.")
-	p.add_argument("--models", "-m", action="append", type=str, help="Generate only specific models (you can specify multiple). Use file name without extension (for example -m A_T221F_1x1). Accepts regexes. (for example -m A_.221F_1x1).")
-	p.add_argument("--clear", "-c", action="store_true", help="Clear the models folder")
-	p.add_argument("--index", "-i", action="store_true", help="Generate models index (considers all existing models, not only those generated with the current run)")
 
-	g = p.add_mutually_exclusive_group()
-	g.add_argument("--newOnly", "-n", action="store_true", help="Generate only new (not yet generated) models")
-	g.add_argument("--existingOnly", "-e", action="store_true", help="Generate only existing (already generated) models")
+	p.add_argument("--models", "-m", action="append", type=str, help="Model names to be generated. Select all models using '-m .*'. Use file name without extension (for example -m A_T221F_1x1). Accepts regexes. (for example -m A_.221F_1x1).")
 
-	return p.parse_args()
+	p.add_argument("--compiler", "-c", type=str, default=None, help="Location of the OpenSCAD executable.")
+
+	p.add_argument("--clear", action="store_true", help="Clear the models folder")
+	p.add_argument("--overwrite", "-o", action="store_true", help="If a file (model/image/..) exists, overwrite it (skipped by default)")
+
+	p.add_argument("--index", action="store_true", help="Generate index (readme files) (considers all existing models, not only those generated with the current run)")
+	p.add_argument("--scad", action="store_true", help="Generate SCAD files.")
+	p.add_argument("--img", action="store_true", help="Generate model previews. Automatically generates SCAD files.")
+	p.add_argument("--stl", action="store_true", help="Generate STL models. Automatically generates SCAD files.")
+
+	result = p.parse_args()
+
+	if result.img or result.stl:
+		result.scad = True
+
+	if result.scad and not result.compiler:
+		raise Exception("No compiler specified")
+
+	return result
 
 args = parseArgs()

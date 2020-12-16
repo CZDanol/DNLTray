@@ -1,3 +1,3 @@
-models/
+models/*/*.stl
 generator/__pycache__/
 loc_*

@@ -100,7 +100,7 @@ def compileScad(baseDir, fileName, cfg, template):
 
 		# Create png preview
 		if args.img and shouldGenerateFile(previewFileName):
-			runProcess([args.compiler, scadFileName, F"--o={previewFileName}", "--colorscheme=BeforeDawn", "--imgsize=256,256", "--quiet", "--projection=o"])
+			runProcess([args.compiler, scadFileName, F"--o={previewFileName}", "--colorscheme=BeforeDawn", "--imgsize=128,128", "--quiet", "--projection=o"])
 
 	except Exception:
 		traceback.print_exc()

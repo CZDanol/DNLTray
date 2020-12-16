@@ -25,20 +25,27 @@ def genScopeCols(data):
 	for key in keys:
 		result += data[key]["value"][0] + " | "
 	
-	result += "\n|"
+	result += "\n| "
 	for key in keys:
 		result += "--- | "
 
 	rowCount = max(len(data[key]["value"]) for key in keys)
 	for row in range(1, rowCount):
-		result += "\n| "
-
+		vals = []
 		for key in keys:
 			lst = data[key]["value"]
-			result += lst[row] if len(lst) > row else ""
+			vals.append(lst[row] if len(lst) > row else "")
+
+		if all(val == "" for val in vals):
+			continue
+
+		result += "\n| "
+
+		for val in vals:
+			result += val
 			result += " | "
 
-	result += "\n"
+	result += "\n\n"
 
 	return result
 

@@ -164,8 +164,6 @@ def main():
 									# Common index entry
 									addToIndex(cDir, "1#/{}#/0_T".format(cName),
 										"## {}\n".format(cName)
-										+ "* Unit count: {}\n".format(unitCountText)
-										+ "* Size: {}\n\n".format(componentSizeText)
 										)
 
 									# Item index entry

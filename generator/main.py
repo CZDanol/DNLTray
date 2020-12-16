@@ -32,7 +32,7 @@ def main():
 			"0_T",
 			"# Models\n"
 			+ "This directory contains model scad files and image previews.\n"
-			+ "## Systems\n"
+			+ "# Systems\n"
 			)
 
 	# Generate all the stuff
@@ -57,8 +57,8 @@ def main():
 		addToIndex(
 			F"{outputDir}",
 			"1_{}_T".format(systemName),
-			"* **[System {}]({}/)**\n".format(systemName, systemDirName)
-			+ "\t* Unit size: {} x {} x {} mm\n".format(system["unitSize"][0], system["unitSize"][1], system["unitSize"][2])
+			"## [System {}]({}/)\n".format(systemName, systemDirName)
+			+ "* Unit size: {} x {} x {} mm\n".format(system["unitSize"][0], system["unitSize"][1], system["unitSize"][2])
 			)
 
 		for horSizeOpt in system["horizontalUnitCountOptions"]:

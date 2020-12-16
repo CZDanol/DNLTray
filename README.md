@@ -1,5 +1,6 @@
 # DNLTray - Danol's ultimaze organizer system
 **WORK IN PROGRESS**
+
 **Due to size limitations, the repository doesn't contain .stl files. A selection of them is available in releases. The rest you have to build yourself. Simply download this repository, open the appropriate scad file and compile it.**
 
 **You can see gallery of all components in the models/ folder.**
@@ -35,6 +36,8 @@ System contains:
 - Always put four rectangles around the pattern (determining position of outer walls)
 
 # To-do
+- The drawer rails are not attached to the wall!
+- Move most settings to system_default.scad
 - Zipping (auto generate PNG + STL zips from selection)
 - Cut down patterns (extra patterns)
 - Cut down sizes - only allow certain combinations (not too high)

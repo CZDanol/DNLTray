@@ -20,6 +20,12 @@ System contains:
 - You can adjust parameters/add your own patterns and recompile (python required)
 	- Feel free to use pull requests
 
+# Print recommendations
+* PLA
+* Standard 0.2mm layers
+* No supports
+* Maybe add a 5mm brim so that the models don't warp (it's a little pain to get it off though)
+
 # License
 - Free for non-commercial use
 - If you intend to use the designs commercially, please contact me to negotiate a commission.
@@ -45,6 +51,8 @@ System contains:
 - Pattern gallery
 - Pattern flag explanations
 - Lids
+  * With and without border
+  * High lids
 - Side frames (vertically stackable)
   - Corner side frames - not necessary (you can just use two separate frames)
   - Double-sisded frames

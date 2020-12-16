@@ -9,7 +9,7 @@ module drawerRails(tolerance=false, holder=false) {
 	to = hdrh + 1;
 
 	railPoints = [[0, -hdrh], [drawerRailWidth, 0], [0, hdrh]];
-	holderPoints = [[0, -to], [drawerRailWidth, -to - drawerRailHolderWedge], [drawerRailWidth, to + drawerRailHolderWedge], [0, to]];
+	holderPoints = [[0, -to], [drawerRailWidth + drawerSideOffset/2, -to - drawerRailHolderWedge], [drawerRailWidth + drawerSideOffset/2, to + drawerRailHolderWedge], [0, to]];
 	notchPoints = [[0, -hdrh - drawerNotchDepth], [drawerRailWidth, 0], [0, hdrh]];
 
 	delta = tolerance ? drawerRailTolerance : 0;
@@ -28,7 +28,7 @@ module drawerRails(tolerance=false, holder=false) {
 }
 
 module drawerRailsHolder() {
-	translate([0, drawerSideOffset, drawerRailPos]) cube([10, 10, drawerRailHeight + 2], center=true);
+	// translate([0, drawerSideOffset, drawerRailPos]) cube([10, 10, drawerRailHeight + 2], center=true); // I'm not sure what this was for
 	drawerRails(holder=true);
 }
 

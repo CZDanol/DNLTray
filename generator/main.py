@@ -181,7 +181,7 @@ def main():
 								if unitCountX >= unitCountY and (unitCountX != unitCountY or rot[0] == 0):
 									cDir = F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}"
 									fName = F"{systemName}_T{unitCountStr}{innerHeightName}_{patternName}{rotStr}"
-									cName = F"{systemName}_T{unitCountStr}*_{patternName}*"
+									cName = F"{systemName}_T{unitCountStr}?_{patternName}*"
 
 									executor.submit(funcs.compileScad,
 										cDir,
@@ -195,7 +195,7 @@ def main():
 								if drawerEnabled:
 									cDir = F"{outputDir}/{systemDirName}/drawers/{unitCountDirStr}"
 									fName = F"{systemName}_D{unitCountStr}{innerHeightName}_{patternName}{rotStr}"
-									cName = F"{systemName}_D{unitCountStr}*_{patternName}*"
+									cName = F"{systemName}_D{unitCountStr}?_{patternName}*"
 
 									executor.submit(funcs.compileScad,
 										cDir,

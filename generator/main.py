@@ -32,7 +32,7 @@ def main():
 			"0_T",
 			"# Models\n"
 			+ "This directory contains model scad files and image previews.\n"
-			+ "## Systems"
+			+ "## Systems\n"
 			)
 
 	# Generate all the stuff

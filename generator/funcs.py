@@ -5,7 +5,7 @@ import numbers
 import subprocess
 import sys
 import re
-import zipfile
+import collections
 
 from cargs import args
 import index
@@ -14,7 +14,7 @@ mutex = threading.Lock()
 modelsGenerated = 0
 
 zipsmutex = threading.Lock()
-zips = {}
+zips = collections.defaultdict(lambda: [])
 
 def makeFileDir(file):
 	while True:
@@ -113,23 +113,9 @@ def compileScad(template : str, baseDir : str, fileName : str, releases, cfg : d
 
 		if args.zip:
 			for release in releases:
-				zipFileName = "releases/{}_{}.zip".format(cfg["systemName"], release)
-
 				zipsmutex.acquire()
-				zd = zips.get(zipFileName)
-				if not zd:
-					zd = [zipfile.ZipFile(zipFileName, "w"), threading.Lock()]
-					zips[zipFileName] = zd
-
+				zips["releases/DNLTray_{}_{}.zip".format(cfg["systemName"], release)].append(stlFileName)
 				zipsmutex.release()
-
-				mutex.acquire()
-				print(F"Packing '{stlFileName}' -> '{zipFileName}'")
-				mutex.release()
-
-				zd[1].acquire()
-				zd[0].write(stlFileName)
-				zd[1].release()
 
 		mutex.acquire()
 		global modelsGenerated

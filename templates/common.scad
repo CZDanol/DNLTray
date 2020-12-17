@@ -1,3 +1,5 @@
+use <Quantico-Regular.ttf>
+
 absComponentSize = [
 	unitSize[0] * unitCount[0],
 	unitSize[1] * unitCount[1],
@@ -165,11 +167,12 @@ module labelHolder() {
 module modelLabel() {
 	sz = 3;
 	spc = 4;
-	fnt = "Arial Rounded MT Bold";
+	fnt = "Quantico";
+	fn = 0;
 
 	rotate([0, 180, 0]) linear_extrude(0.6, center=true) {
-		translate([0, 0, 0]) text(modelName, size=sz, valign="top", font=fnt);
-		translate([0, -spc, 0]) text(version, size=sz, valign="top", font=fnt);
-		translate([0, -spc*2, 0]) text("DNLTray", size=sz, valign="top", font=fnt);
+		translate([0, 0, 0]) text(modelName, size=sz, valign="top", font=fnt, $fn=fn);
+		translate([0, -spc, 0]) text(version, size=sz, valign="top", font=fnt, $fn=fn);
+		translate([0, -spc*2, 0]) text("DNLTray", size=sz, valign="top", font=fnt, $fn=fn);
 	}
 }

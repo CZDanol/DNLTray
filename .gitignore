@@ -3,3 +3,4 @@ models/
 generator/__pycache__/
 releases/
 loc_*
+.vs/

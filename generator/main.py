@@ -6,6 +6,7 @@ import re
 import os
 import itertools
 import time
+import zipfile
 
 import config
 import state
@@ -39,11 +40,7 @@ def main():
 
 	# Delete the "data" outputs directory
 	if args.clear:
-		rmDirs("model")
-
-	if args.zip:
-		rmDirs("releases")
-		funcs.makeFileDir("releases/file")
+		rmDirs("models")
 
 	index.addToIndex(
 			F"{outputDir}",
@@ -70,7 +67,7 @@ def main():
 
 		s.config["systemName"] = system.name
 
-		if args.scad:
+		if args.scad or args.zip:
 			funcs.writeFile(s.config["systemConfigFilePath"], funcs.configStr(s.config))
 
 		index.addToIndex(
@@ -201,6 +198,26 @@ def main():
 	executor.shutdown()
 
 	print("Done. Generated {} models.".format(funcs.modelsGenerated))
+
+	if args.zip:
+		rmDirs("releases")
+		funcs.makeFileDir("releases/file")
+
+		print("Zipping...")
+
+		def mzip(zipFileName):
+			z = zipfile.ZipFile(zipFileName, "w")
+
+			mutex.acquire()
+			print(F"Packing '{stlFileName}' -> '{zipFileName}'")
+			mutex.release()
+
+			z.write(stlFileName)
+
+		executor.map(mzip, funcs.zips.keys())
+
+		executor.shutdown()
+		print("Done zipping.")
 
 	if args.index:
 		index.generateIndexes()

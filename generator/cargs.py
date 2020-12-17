@@ -15,6 +15,10 @@ def parseArgs():
 	p.add_argument("--img", action="store_true", help="Generate model previews. Automatically generates SCAD files.")
 	p.add_argument("--stl", action="store_true", help="Generate STL models. Automatically generates SCAD files.")
 
+	p.add_argument("--extraPatterns", action="store_true", help="Generate extra patterns (those that have the X flag).")
+	p.add_argument("--compartmentHeightVariants", action="store_true", help="Generate extra variants with half inner wall heights.")
+	p.add_argument("--allCombinations", action="store_true", help="Generate all combinations (ignore what combinations the system suggests) -- still can be combined with --extraPatterns and other.")
+
 	result = p.parse_args()
 
 	if result.img or result.stl:

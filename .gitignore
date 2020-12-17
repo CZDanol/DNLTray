@@ -1,3 +1,4 @@
 models/*/*.stl
+models/
 generator/__pycache__/
 loc_*

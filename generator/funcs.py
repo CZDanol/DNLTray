@@ -7,8 +7,10 @@ import sys
 import re
 
 from cargs import args
+import index
 
 mutex = threading.Lock()
+modelsGenerated = 0
 
 def makeFileDir(file):
 	while True:
@@ -32,13 +34,12 @@ def configVal(key, val):
 	else:
 		raise Exception("Unsupported type for key " + key + ": " + str(type(val)))
 
-def configStr(config):
+def configStr(config, diffConfig = {}):
 	result = "// AUTO GENERATED CONFIG\n"
 
 	for key in config:
-		result += F"{key} = {configVal(key, config[key])};\n"
-
-	result += "\n\n"
+		if config[key] != diffConfig.get(key, None):
+			result += F"{key} = {configVal(key, config[key])};\n"
 
 	return result
 
@@ -74,7 +75,7 @@ def shouldGenerateFile(file):
 
 	return result
 
-def compileScad(baseDir, fileName, cfg, template):
+def compileScad(template : str, baseDir : str, fileName : str, cfg : dict, diffCfg : dict = {}):
 	if not any(re.fullmatch(m, fileName) for m in args.models):
 		return
 
@@ -86,13 +87,15 @@ def compileScad(baseDir, fileName, cfg, template):
 		previewFileName = F"{baseDir}/png/{fileName}.png"
 
 		template = os.path.relpath(F"templates/{template}.scad", scadDir)
+		systemConfigPath = os.path.relpath(cfg["systemConfigFilePath"], scadDir)
+
 		cfg["innerWallPatternFile"] = os.path.relpath("patterns/" + cfg["innerWallPatternFile"], scadDir)
 		cfg["modelName"] = fileName
-		cfgStr = configStr(cfg)
+		cfgStr = configStr(cfg, diffCfg)
 
 		# Create the scad file
 		if args.scad and shouldGenerateFile(scadFileName):
-			writeFile(scadFileName, F"{cfgStr}\ninclude <{template}>;")
+			writeFile(scadFileName, F"include <{systemConfigPath}>;\n\n{cfgStr}\ninclude <{template}>;")
 
 		# Create STL
 		if args.stl and shouldGenerateFile(stlFileName):
@@ -101,6 +104,11 @@ def compileScad(baseDir, fileName, cfg, template):
 		# Create png preview
 		if args.img and shouldGenerateFile(previewFileName):
 			runProcess([args.compiler, scadFileName, F"--o={previewFileName}", "--colorscheme=BeforeDawn", "--imgsize=128,128", "--quiet", "--projection=o"])
+
+		mutex.acquire()
+		global modelsGenerated
+		modelsGenerated += 1
+		mutex.release()
 
 	except Exception:
 		traceback.print_exc()

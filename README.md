@@ -42,7 +42,6 @@ System contains:
 - Always put four rectangles around the pattern (determining position of outer walls)
 
 # To-do
-- The drawer rails are not attached to the wall!
 - Move most settings to system_default.scad
 - Zipping (auto generate PNG + STL zips from selection)
 - Cut down patterns (extra patterns)

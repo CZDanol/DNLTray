@@ -69,6 +69,33 @@ def genIndexScope(data):
 
 	return result
 
+def componentAddToIndex(s, cDir, fName, cName):
+	# Index title
+	addToIndex(cDir, "0_T",
+		"# {}_T{}{}{}*\n".format(s.system.name, s.config["unitCount"][0], s.config["unitCount"][1], s.config["unitCount"][2])
+		+ "* System: {}\n".format(s.system.name)
+		+ "* Unit count: {} x {} x {} units\n".format(s.config["unitCount"][0], s.config["unitCount"][1], s.config["unitCount"][2])
+		+ "* Component size: (WxHxL) {} x {} x {} mm\n".format(s.componentSize[0], s.componentSize[1], s.componentSize[2])
+		+ "* Path: `{}`\n".format(cDir)
+		+ "# Components\n"
+		)
+
+	# Common index entry
+	addToIndex(cDir, "1#/{}#/0_T".format(cName),
+		"## {}\n".format(cName)
+		)
+
+	# Item index entry
+	addToIndex(cDir, "1#/{}#/1_COLS/{}".format(cName, fName), [
+		"**{}**".format(fName),
+		s.compartmentsHeight["text"],
+		s.compartmentsTransform["text"],
+		"![preview](png/{}.png)".format(fName)
+		])
+
+	# Spacing after
+	addToIndex(cDir, "1#/{}#/2_T".format(cName), "\n---\n")
+
 def generateIndexes():
 	for indexDir in indexes:
 		funcs.writeFile(indexDir + "/README.md", genIndexScope(indexes[indexDir]))

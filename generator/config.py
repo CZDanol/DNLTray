@@ -1,24 +1,46 @@
 import os
 
-systems = [
+patterns = [p for p in os.listdir("patterns") if p.endswith(".svg")]
+
+compartmentsHeights = [
 	{
-		"systemName": "A",
-		"unitSize": [25, 25, 15],
-		"horizontalMountConenctorDistance": 6,
-		"horizontalUnitCountOptions": [
-			[2, 2],
-			[3, 3], [3, 2],
-			[4, 4], [4, 3], [4, 2], 
-			[6, 6], [6, 4], [6, 3],
-			[8, 8], [8, 6], [8, 4]
-		],
-		"verticalUnitCountOptions": [1, 2, 3, 4]
+		"id": "F",
+		"text": "Full height",
+
+		"config": {
+			"innerWallPercentageHeight": 1
+		}
+	},
+	{
+		"id": "H",
+		"text": "Half height",
+
+		"config": {
+			"innerWallPercentageHeight": 0.5
+		}
 	}
 ]
 
-patterns = [p for p in os.listdir("patterns") if p.endswith(".svg")]
+compartmentsTransforms = [
+	{
+		"id": "",
+		"text": "",
 
-cfg = {
+		"config": {
+			"innerWallRotation": 0
+		}
+	},
+	{
+		"id": "R",
+		"text": "90° rotation",
+
+		"config": {
+			"innerWallRotation": 90
+		}
+	}
+]
+
+defaultConfig = {
 	# CORE STUFF
 	# =======================
 

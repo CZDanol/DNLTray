@@ -5,6 +5,7 @@ import copy
 import re
 import os
 import itertools
+import time
 
 import config
 import state
@@ -15,23 +16,34 @@ import index
 
 from cargs import args
 
+def rmDirs(path):
+	if not os.path.exists(path):
+		return
+
+	print("Deleting {}...".format(path))
+	while True:
+		try:
+			shutil.rmtree(path)
+			time.sleep(1)
+			break
+
+		except OSError:
+			continue
+
+	print("{} deleted".format(path))
+
 def main():
 	outputDir = "models"
 
 	executor = concurrent.futures.ThreadPoolExecutor()
 
 	# Delete the "data" outputs directory
-	if args.clear and os.path.exists("models"):
-		print("Deleting old models...")
-		while True:
-			try:
-				shutil.rmtree("models")
-				break
+	if args.clear:
+		rmDirs("model")
 
-			except OSError:
-				continue
-
-		print("Old models deleted")
+	if args.zip:
+		rmDirs("releases")
+		funcs.makeFileDir("releases/file")
 
 	index.addToIndex(
 			F"{outputDir}",
@@ -56,7 +68,7 @@ def main():
 		for key, value in system.config.items():
 			s.config[key] = value
 
-		systemConfig = copy.deepcopy(s.config)
+		s.config["systemName"] = system.name
 
 		if args.scad:
 			funcs.writeFile(s.config["systemConfigFilePath"], funcs.configStr(s.config))
@@ -79,9 +91,9 @@ def main():
 			+ "* Unit size: {} x {} x {} mm\n".format(s.config["unitSize"][0], s.config["unitSize"][1], s.config["unitSize"][2])
 			)
 
-		prevCfg3 = s.config
+		systemConfig = s.config
 		for ucX, ucY, ucZ in itertools.product(range(8), range(8), range(8)):
-			s.config = copy.deepcopy(prevCfg3)
+			s.config = copy.deepcopy(systemConfig)
 
 			s.config["unitCount"] = [ucX, ucY, ucZ]
 
@@ -110,12 +122,13 @@ def main():
 					"## {}\n".format(fName)
 					+ "* Unit count: {}\n".format(unitCountText)
 					+ "* Component size: {}\n\n".format(componentSizeText)
+					+ index.releasesListStr(s, "* ", "\n")
 					+ "![preview](png/{}.png)\n".format(fName)
 					)
 
 				executor.submit(funcs.compileScad,
 					"drawer_tray",
-					cDir, fName,
+					cDir, fName, copy.deepcopy(s.targetReleases),
 					copy.deepcopy(s.config), systemConfig
 				)
 
@@ -165,7 +178,7 @@ def main():
 
 							executor.submit(funcs.compileScad,
 								"tray",
-								cDir, fName,
+								cDir, fName, copy.deepcopy(s.targetReleases),
 								copy.deepcopy(s.config), systemConfig
 							)
 
@@ -179,7 +192,7 @@ def main():
 
 							executor.submit(funcs.compileScad,
 								"drawer",
-								cDir, fName,
+								cDir, fName, copy.deepcopy(s.targetReleases),
 								copy.deepcopy(s.config), systemConfig
 								)
 

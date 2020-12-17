@@ -9,3 +9,5 @@ class GeneratorState:
 
 	compartmentsHeight = None
 	compartmentsTransform = None
+
+	targetReleases = []

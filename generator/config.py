@@ -5,7 +5,7 @@ patterns = [p for p in os.listdir("patterns") if p.endswith(".svg")]
 compartmentsHeights = [
 	{
 		"id": "F",
-		"text": "Full height",
+		"text": "",
 
 		"config": {
 			"innerWallPercentageHeight": 1
@@ -32,7 +32,7 @@ compartmentsTransforms = [
 	},
 	{
 		"id": "R",
-		"text": "90° rotation",
+		"text": "Rotated pattern",
 
 		"config": {
 			"innerWallRotation": 90

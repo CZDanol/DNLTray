@@ -69,6 +69,12 @@ def genIndexScope(data):
 
 	return result
 
+def releasesListStr(s, prefix = "", suffix = ""):
+	if not s.targetReleases:
+		return ""
+
+	return "{}STL: {}{}".format(prefix, ", ".join(rel for rel in s.targetReleases), suffix)
+
 def componentAddToIndex(s, cDir, fName, cName):
 	# Index title
 	addToIndex(cDir, "0_T",
@@ -90,6 +96,7 @@ def componentAddToIndex(s, cDir, fName, cName):
 		"**{}**".format(fName),
 		s.compartmentsHeight["text"],
 		s.compartmentsTransform["text"],
+		releasesListStr(s, "", ""),
 		"![preview](png/{}.png)".format(fName)
 		])
 

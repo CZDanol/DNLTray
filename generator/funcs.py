@@ -5,12 +5,16 @@ import numbers
 import subprocess
 import sys
 import re
+import zipfile
 
 from cargs import args
 import index
 
 mutex = threading.Lock()
 modelsGenerated = 0
+
+zipsmutex = threading.Lock()
+zips = {}
 
 def makeFileDir(file):
 	while True:
@@ -75,7 +79,7 @@ def shouldGenerateFile(file):
 
 	return result
 
-def compileScad(template : str, baseDir : str, fileName : str, cfg : dict, diffCfg : dict = {}):
+def compileScad(template : str, baseDir : str, fileName : str, releases, cfg : dict, diffCfg : dict = {}):
 	if not any(re.fullmatch(m, fileName) for m in args.models):
 		return
 
@@ -93,17 +97,39 @@ def compileScad(template : str, baseDir : str, fileName : str, cfg : dict, diffC
 		cfg["modelName"] = fileName
 		cfgStr = configStr(cfg, diffCfg)
 
+		release = releases and args.zip
+
 		# Create the scad file
-		if args.scad and shouldGenerateFile(scadFileName):
+		if (args.scad or release) and shouldGenerateFile(scadFileName):
 			writeFile(scadFileName, F"include <{systemConfigPath}>;\n\n{cfgStr}\ninclude <{template}>;")
 
 		# Create STL
-		if args.stl and shouldGenerateFile(stlFileName):
+		if (args.stl or release) and shouldGenerateFile(stlFileName):
 			runProcess([args.compiler, scadFileName, F"--o={stlFileName}"])
 
 		# Create png preview
 		if args.img and shouldGenerateFile(previewFileName):
 			runProcess([args.compiler, scadFileName, F"--o={previewFileName}", "--colorscheme=BeforeDawn", "--imgsize=128,128", "--quiet", "--projection=o"])
+
+		if args.zip:
+			for release in releases:
+				zipFileName = "releases/{}_{}.zip".format(cfg["systemName"], release)
+
+				zipsmutex.acquire()
+				zd = zips.get(zipFileName)
+				if not zd:
+					zd = [zipfile.ZipFile(zipFileName, "w"), threading.Lock()]
+					zips[zipFileName] = zd
+
+				zipsmutex.release()
+
+				mutex.acquire()
+				print(F"Packing '{stlFileName}' -> '{zipFileName}'")
+				mutex.release()
+
+				zd[1].acquire()
+				zd[0].write(stlFileName)
+				zd[1].release()
 
 		mutex.acquire()
 		global modelsGenerated

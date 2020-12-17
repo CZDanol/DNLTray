@@ -1,4 +1,5 @@
 models/*/*.stl
 models/
 generator/__pycache__/
+releases/
 loc_*

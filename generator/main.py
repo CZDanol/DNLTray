@@ -18,6 +18,8 @@ import index
 
 from cargs import args
 
+workerCount = max(2, os.cpu_count() - 2) # Leave some free cores so the computer is actually usable
+
 def rmDirs(path):
 	if not os.path.exists(path):
 		return
@@ -56,7 +58,7 @@ class StateGuard:
 def main():
 	outputDir = "models"
 
-	executor = concurrent.futures.ThreadPoolExecutor()
+	executor = concurrent.futures.ThreadPoolExecutor(max_workers=workerCount)
 
 	# Delete the "data" outputs directory
 	if args.clear:
@@ -230,7 +232,7 @@ def main():
 												index.componentAddToIndex(s, cDir, fName, cName)
 
 	executor.shutdown()
-	executor = concurrent.futures.ThreadPoolExecutor()
+	executor = concurrent.futures.ThreadPoolExecutor(max_workers=workerCount)
 
 	print("Done. Generated {} models.".format(funcs.modelsGenerated))
 

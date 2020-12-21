@@ -109,7 +109,7 @@ def compileScad(template : str, baseDir : str, fileName : str, releases, cfg : d
 
 		# Create png preview
 		if args.img and shouldGenerateFile(previewFileName):
-			runProcess([args.compiler, scadFileName, F"--o={previewFileName}", "--colorscheme=BeforeDawn", "--imgsize=128,128", "--quiet", "--projection=o"])
+			runProcess([args.compiler, scadFileName, F"--o={previewFileName}", "--colorscheme=BeforeDawn", "--imgsize=180,180", "--quiet", "--projection=o"])
 
 		if args.zip:
 			for release in releases:

@@ -171,7 +171,7 @@ def main():
 						if ucX >= ucY and (ucX != ucY or s.config["innerWallRotation"] == 0) and system.shouldGenerateComponent(s, "tray"):
 							cDir = F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}"
 							fName = F"{systemName}_T{unitCountStr}{compartmentsHeightId}_{patternName}{compartmentsTransformId}"
-							cName = F"{systemName}_T{unitCountStr}?_{patternName}*"
+							cName = F"{systemName}_T{unitCountStr}_{patternName}"
 
 							executor.submit(funcs.compileScad,
 								"tray",
@@ -185,7 +185,7 @@ def main():
 						if system.shouldGenerateComponent(s, "drawer"):
 							cDir = F"{outputDir}/{systemDirName}/drawers/{unitCountDirStr}"
 							fName = F"{systemName}_D{unitCountStr}{compartmentsHeightId}_{patternName}{compartmentsTransformId}"
-							cName = F"{systemName}_D{unitCountStr}?_{patternName}*"
+							cName = F"{systemName}_D{unitCountStr}_{patternName}"
 
 							executor.submit(funcs.compileScad,
 								"drawer",

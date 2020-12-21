@@ -42,12 +42,11 @@ System contains:
 - Always put four rectangles around the pattern (determining position of outer walls)
 
 # To-do
-- Move most settings to system_default.scad
-- Zipping (auto generate PNG + STL zips from selection)
-- Cut down patterns (extra patterns)
-- Cut down sizes - only allow certain combinations (not too high)
-- Disable half height variants?
-- Pattern gallery
+- Half-height variants for trays with height > 1?
+- Bigger preview images
+- python with statement
+- Maybe thicker walls for larger bins?
+- Releases
 - Pattern flag explanations
 - Lids
   * With and without border

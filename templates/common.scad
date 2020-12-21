@@ -101,8 +101,17 @@ module horizontalMounts(skipFront = false) {
 	}
 }
 
+module verticalMountsProfileUnit(delta, onlySquare=false) {
+	pts = [[-verticalMountWidth/2, 0], [0, verticalMountHeight], [verticalMountWidth/2, 0]];
+
+	if(onlySquare)
+		square([verticalMountWidth + delta*2, verticalMountLength + delta*2], center=true);
+	else
+		rotate([90, 0, 0]) linear_extrude(verticalMountLength + delta, center=true) offset(delta) polygon(pts);
+}
+
 /* ---------- Vertical mounts ------------------ */
-module verticalMountsProfile(inner = true) {
+module verticalMountsProfile(inner=true, delta=0, onlySquare=false) {
 	offset = verticalMountInset + horizontalMountDepth / 2;
 	hvm = verticalMountLength;
 	ohvm = offset - hvm;
@@ -110,16 +119,16 @@ module verticalMountsProfile(inner = true) {
 	for(y = [0 : unitCount[1] - 1]) {
 		for(x = [0 : unitCount[0] - 1]) translate([-absComponentSize[0] / 2 + unitSize[0] * x, -absComponentSize[1] / 2 + unitSize[1] * y, 0]) {
 			if(inner || x == 0)
-				translate([offset, unitSize[1] / 2, 0]) square([verticalMountWidth, verticalMountLength], center=true);
+				translate([offset, unitSize[1] / 2, 0]) verticalMountsProfileUnit(delta, onlySquare);
 
 			if(inner || x == unitCount[0] - 1)
-				translate([unitSize[0] - offset, unitSize[1] / 2, 0]) square([verticalMountWidth, verticalMountLength], center=true);
+				translate([unitSize[0] - offset, unitSize[1] / 2, 0]) verticalMountsProfileUnit(delta, onlySquare);
 			
 			if(inner || y == 0)
-				translate([unitSize[0] / 2, offset, 0]) square([verticalMountLength, verticalMountWidth], center=true);
+				translate([unitSize[0] / 2, offset, 0]) rotate([0, 0, 90]) verticalMountsProfileUnit(delta, onlySquare);
 
 			if(inner || y == unitCount[1] - 1)	
-				translate([unitSize[0] / 2, unitSize[1] - offset, 0]) square([verticalMountLength, verticalMountWidth], center=true);
+				translate([unitSize[0] / 2, unitSize[1] - offset, 0]) rotate([0, 0, 90]) verticalMountsProfileUnit(delta, onlySquare);
 		}
 	}
 }
@@ -128,7 +137,7 @@ module verticalMountsIncl() {
 
 	// Male top
 	translate([0, 0, absComponentSize[2]])
-		linear_extrude(verticalMountHeight) verticalMountsProfile(inner = false);
+		verticalMountsProfile(inner = false);
 
 	// Top reinforcement
 	intersection() {
@@ -137,18 +146,19 @@ module verticalMountsIncl() {
 			rotate([90, 0, 180]) linear_extrude(adjComponentSize[d]) polygon([[0, -horizontalMountKickIn], [dp, 0], [0, 0]]);
 		}
 
-		linear_extrude(absComponentSize[2]) offset(delta=verticalMountReinforcementDistance) verticalMountsProfile(inner = false);
+		linear_extrude(absComponentSize[2]) verticalMountsProfile(inner=false, delta=verticalMountReinforcementDistance, onlySquare=true);
 	}
 
 	// Bottom reinforcement
-	linear_extrude(verticalMountHeight + verticalMountClearance + verticalMountReinforcementDistance) intersection() {
-		offset(delta=verticalMountReinforcementDistance) verticalMountsProfile();
+	linear_extrude(verticalMountHeight + verticalMountClearance) intersection() {
+		verticalMountsProfile(delta=verticalMountReinforcementDistance, onlySquare=true);
 		componentPerimeter();
 	}
 }
 module verticalMountsExcl() {
 	// Female bottom
-	linear_extrude(verticalMountHeight + verticalMountClearance) offset(delta=verticalMountTolerance) verticalMountsProfile();
+	// linear_extrude(verticalMountHeight + verticalMountClearance) offset(delta=verticalMountTolerance) verticalMountsProfile();
+	verticalMountsProfile(verticalMountTolerance);
 }
 
 module labelHolder() {

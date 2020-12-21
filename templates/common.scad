@@ -175,7 +175,7 @@ module labelHolder() {
 }
 
 module modelLabel() {
-	sz = 3;
+	/*sz = 3;
 	spc = 4;
 	fnt = "Quantico";
 	fn = 0;
@@ -184,5 +184,5 @@ module modelLabel() {
 		translate([0, 0, 0]) text(modelName, size=sz, valign="top", font=fnt, $fn=fn);
 		translate([0, -spc, 0]) text(version, size=sz, valign="top", font=fnt, $fn=fn);
 		translate([0, -spc*2, 0]) text("DNLTray", size=sz, valign="top", font=fnt, $fn=fn);
-	}
+	}*/
 }

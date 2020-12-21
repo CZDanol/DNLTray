@@ -196,6 +196,7 @@ def main():
 							index.componentAddToIndex(s, cDir, fName, cName)
 
 	executor.shutdown()
+	executor = concurrent.futures.ThreadPoolExecutor()
 
 	print("Done. Generated {} models.".format(funcs.modelsGenerated))
 
@@ -208,11 +209,9 @@ def main():
 		def mzip(zipFileName):
 			z = zipfile.ZipFile(zipFileName, "w")
 
-			mutex.acquire()
-			print(F"Packing '{stlFileName}' -> '{zipFileName}'")
-			mutex.release()
-
-			z.write(stlFileName)
+			for stlFileName in funcs.zips[zipFileName]:
+				print(F"Packing '{stlFileName}' -> '{zipFileName}'")
+				z.write(stlFileName)
 
 		executor.map(mzip, funcs.zips.keys())
 

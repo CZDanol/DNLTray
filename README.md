@@ -48,6 +48,7 @@ System contains:
 - Maybe thicker walls for larger bins?
 - Releases
 - Pattern flag explanations
+- No-bottom drawer trays
 - Lids
   * With and without border
   * High lids

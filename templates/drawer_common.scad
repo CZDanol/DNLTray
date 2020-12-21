@@ -15,11 +15,12 @@ module drawerRails(tolerance=false, holder=false) {
 	delta = tolerance ? drawerRailTolerance : 0;
 	points = holder ? holderPoints : railPoints;
 	len = holder ? adjComponentSize[1] : drawerLength;
+	rof = tolerance ? 1 : 0;
 
 	translate([0, holder ? 0 : drawerSideOffset/2, drawerRailPos]) rotate([90, 0, 0]) {
 		// Rails
-		translate([drawerWidth/2, 0, 0]) linear_extrude(len, center=true) offset(delta) polygon(points);
-		translate([-drawerWidth/2, 0, 0]) rotate([0, 180, 0]) linear_extrude(len, center=true) offset(delta) polygon(points);
+		translate([drawerWidth/2, 0, -rof * 0.5]) linear_extrude(len + rof, center=true) offset(delta) polygon(points);
+		translate([-drawerWidth/2, 0, -rof * 0.5]) rotate([0, 180, 0]) linear_extrude(len + rof, center=true) offset(delta) polygon(points);
 
 		// A little notch so that the drawers stay close
 		translate([drawerWidth/2, 0, -drawerLength/2 + drawerNotchPosition]) linear_extrude(drawerNotchLength + (tolerance ? drawerNotchTolerance : 0), center=true) offset(delta) polygon(notchPoints);
@@ -33,7 +34,7 @@ module drawerRailsHolder() {
 }
 
 module drawerHoleExcl() {
-	translate([0, drawerSideOffset/2, drawerBottomOffset]) linear_extrude(1000) square([drawerWidth + drawerSideTolerance * 2, drawerLength], center=true);
+	translate([0, drawerSideOffset/2 + 1, drawerBottomOffset]) linear_extrude(1000) square([drawerWidth + drawerSideTolerance * 2, drawerLength], center=true);
 	drawerRails(tolerance=true);
 }
 

@@ -40,6 +40,21 @@ compartmentsTransforms = [
 	}
 ]
 
+drawerTrayVersions = [
+	{
+		"id": "",
+		"text": "",
+		"config": {}
+	},
+	{
+		"id": "L",
+		"text": "Without floor",
+		"config": {
+			"floorOutlineOnly": 1
+		}
+	}
+]
+
 defaultConfig = {
 	# CORE STUFF
 	# =======================
@@ -73,6 +88,7 @@ defaultConfig = {
 
 	"outerWallWidth": 1,
 	"floorWidth": 1,
+	"floorOutlineOnly": 0,
 
 	# Size of the wedges in the corners
 	"cornerReinforcementSize": 4,

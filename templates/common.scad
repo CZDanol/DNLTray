@@ -37,8 +37,12 @@ module compartmentsProfile() {
 }
 
 /* -------- Floor --------- */
-module componentFloor() {
-	linear_extrude(floorWidth) componentPerimeter();
+module componentFloor(outlineOnly=false) {
+	difference() {
+		linear_extrude(floorWidth) componentPerimeter();
+		if(outlineOnly)
+			translate([0, 0, -1]) linear_extrude(floorWidth+2) offset(delta=-verticalMountInset-verticalMountWidth-verticalMountReinforcementDistance) componentPerimeter();
+	}
 }
 
 /* -------- Outer wall --------- */
@@ -132,7 +136,7 @@ module verticalMountsProfile(inner=true, delta=0, onlySquare=false) {
 		}
 	}
 }
-module verticalMountsIncl() {
+module verticalMountsIncl(floorOutlineOnly=false) {
 	dp = verticalMountInset + horizontalMountDepth / 2;
 
 	// Male top
@@ -151,14 +155,14 @@ module verticalMountsIncl() {
 
 	// Bottom reinforcement
 	linear_extrude(verticalMountHeight + verticalMountClearance) intersection() {
-		verticalMountsProfile(delta=verticalMountReinforcementDistance, onlySquare=true);
+		verticalMountsProfile(delta=verticalMountReinforcementDistance, onlySquare=true, inner=!floorOutlineOnly);
 		componentPerimeter();
 	}
 }
 module verticalMountsExcl() {
 	// Female bottom
 	// linear_extrude(verticalMountHeight + verticalMountClearance) offset(delta=verticalMountTolerance) verticalMountsProfile();
-	verticalMountsProfile(verticalMountTolerance);
+	verticalMountsProfile(delta=verticalMountTolerance);
 }
 
 module labelHolder() {
@@ -175,8 +179,8 @@ module labelHolder() {
 }
 
 module modelLabel() {
-	/*sz = 3;
-	spc = 4;
+	sz = 3.5;
+	spc = 5.5;
 	fnt = "Quantico";
 	fn = 0;
 
@@ -184,5 +188,5 @@ module modelLabel() {
 		translate([0, 0, 0]) text(modelName, size=sz, valign="top", font=fnt, $fn=fn);
 		translate([0, -spc, 0]) text(version, size=sz, valign="top", font=fnt, $fn=fn);
 		translate([0, -spc*2, 0]) text("DNLTray", size=sz, valign="top", font=fnt, $fn=fn);
-	}*/
+	}
 }

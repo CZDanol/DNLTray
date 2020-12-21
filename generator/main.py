@@ -1,5 +1,6 @@
 import argparse
 import concurrent.futures
+import collections
 import shutil
 import copy
 import re
@@ -33,6 +34,25 @@ def rmDirs(path):
 
 	print("{} deleted".format(path))
 
+class StateGuard:
+	stack = []
+	state = None
+
+	def __init__(self, state):
+		cfg = copy.deepcopy(config.defaultConfig)
+		self.stack.append(cfg)
+		self.state = state
+		state.config = cfg
+
+	def __enter__(self):
+		cfg = copy.deepcopy(self.stack[len(self.stack) - 1])
+		self.stack.append(cfg)
+		self.state.config = cfg
+
+	def __exit__(self, t, v, tb):
+		cfg = self.stack.pop()
+		self.state.config = cfg
+
 def main():
 	outputDir = "models"
 
@@ -51,149 +71,163 @@ def main():
 			)
 
 	s = state.GeneratorState()
+	sg = StateGuard(s)
 
 	# Generate all the stuff
 	for system in systems.systems:
-		s.system = system
-		s.config = copy.deepcopy(config.defaultConfig)
+		with sg:
+			s.system = system
 
-		systemName = system.name
-		systemDirName = "SYS_" + systemName
+			systemName = system.name
+			systemDirName = "SYS_" + systemName
 
-		s.config["systemConfigFilePath"] = F"{outputDir}/{systemDirName}/system_config.scad"
+			s.config["systemConfigFilePath"] = F"{outputDir}/{systemDirName}/system_config.scad"
 
-		for key, value in system.config.items():
-			s.config[key] = value
+			for key, value in system.config.items():
+				s.config[key] = value
 
-		s.config["systemName"] = system.name
+			s.config["systemName"] = system.name
 
-		if args.scad or args.zip:
-			funcs.writeFile(s.config["systemConfigFilePath"], funcs.configStr(s.config))
+			if args.scad or args.zip:
+				funcs.writeFile(s.config["systemConfigFilePath"], funcs.configStr(s.config))
 
-		index.addToIndex(
-			F"{outputDir}/{systemDirName}",
-			"0_T",
-			"# System {}\n".format(systemName)
-			+ "Unit size: {} x {} x {} mm\n".format(s.config["unitSize"][0], s.config["unitSize"][1], s.config["unitSize"][2])
-			+ "## Directories\n"
-			+ "* [Trays](trays/): Standard bins you put things to from top\n"
-			+ "* [Drawers](drawers/): Well, drawers\n"
-			+ "* [Drawer trays](drawer_trays/): Trays you put the drawers to, basically drawer slots\n"
-			)
-
-		index.addToIndex(
-			F"{outputDir}",
-			"1_{}_T".format(systemName),
-			"## [System {}]({}/)\n".format(systemName, systemDirName)
-			+ "* Unit size: {} x {} x {} mm\n".format(s.config["unitSize"][0], s.config["unitSize"][1], s.config["unitSize"][2])
-			)
-
-		systemConfig = s.config
-		for ucX, ucY, ucZ in itertools.product(range(8), range(8), range(8)):
-			s.config = copy.deepcopy(systemConfig)
-
-			s.config["unitCount"] = [ucX, ucY, ucZ]
-
-			s.componentSize = [s.config["unitSize"][0] * ucX, s.config["unitSize"][1] * ucY, s.config["unitSize"][2] * ucZ]
-			componentSizeText = "(WxLxH) {} x {} x {} mm".format(s.componentSize[0], s.componentSize[1], s.componentSize[2])
-
-			unitCountText = F"(WxLxH) {ucX} x {ucY} x {ucZ}"
-			unitCountStr = F"{ucX}{ucY}{ucZ}"
-			unitCountDirStr = "{}x{}x{}_units__{}x{}x{}_mm".format(ucX, ucY, ucZ, s.componentSize[0], s.componentSize[1], s.componentSize[2])
-
-			# Drawer tray
-			if system.shouldGenerateComponent(s, "drawerTray"):
-				cDir = F"{outputDir}/{systemDirName}/drawer_trays"
-				fName = F"{systemName}_W{unitCountStr}"
-
-				# Index title
-				index.addToIndex(cDir, "0_T",
-					"# {}_W*\n".format(systemName)
-					+ "* System: {}\n".format(systemName)
-					+ "* Path: `{}`\n".format(cDir)
-					+ "# Components\n"
-					)
-
-				# Index entry
-				index.addToIndex(cDir, "1_{}_T".format(fName),
-					"## {}\n".format(fName)
-					+ "* Unit count: {}\n".format(unitCountText)
-					+ "* Component size: {}\n\n".format(componentSizeText)
-					+ index.releasesListStr(s, "* ", "\n")
-					+ "![preview](png/{}.png)\n".format(fName)
-					)
-
-				executor.submit(funcs.compileScad,
-					"drawer_tray",
-					cDir, fName, copy.deepcopy(s.targetReleases),
-					copy.deepcopy(s.config), systemConfig
+			index.addToIndex(
+				F"{outputDir}/{systemDirName}",
+				"0_T",
+				"# System {}\n".format(systemName)
+				+ "Unit size: {} x {} x {} mm\n".format(s.config["unitSize"][0], s.config["unitSize"][1], s.config["unitSize"][2])
+				+ "## Directories\n"
+				+ "* [Trays](trays/): Standard bins you put things to from top\n"
+				+ "* [Drawers](drawers/): Well, drawers\n"
+				+ "* [Drawer trays](drawer_trays/): Trays you put the drawers to, basically drawer slots\n"
 				)
 
-			for pattern in config.patterns:
-				patternBaseName = os.path.basename(os.path.splitext(pattern)[0])
-				patternMatch = re.fullmatch("(.*?)(?:_x([A-Z]*))?", patternBaseName)
-				patternName = patternMatch.group(1)
-				patternFlags = str(patternMatch.group(2))
+			index.addToIndex(
+				F"{outputDir}",
+				"1_{}_T".format(systemName),
+				"## [System {}]({}/)\n".format(systemName, systemDirName)
+				+ "* Unit size: {} x {} x {} mm\n".format(s.config["unitSize"][0], s.config["unitSize"][1], s.config["unitSize"][2])
+				)
 
-				s.config["innerWallPatternFile"] = pattern
+			systemConfig = s.config
+			for ucX, ucY, ucZ in itertools.product(range(8), range(8), range(8)):
+				with sg:
+					s.config["unitCount"] = [ucX, ucY, ucZ]
 
-				prevCfg = s.config
-				for s.compartmentsTransform in config.compartmentsTransforms:
-					s.config = copy.deepcopy(prevCfg)
+					s.componentSize = [s.config["unitSize"][0] * ucX, s.config["unitSize"][1] * ucY, s.config["unitSize"][2] * ucZ]
+					componentSizeText = "(WxLxH) {} x {} x {} mm".format(s.componentSize[0], s.componentSize[1], s.componentSize[2])
 
-					for key, value in s.compartmentsTransform["config"].items():
-						s.config[key] = value
+					unitCountText = F"(WxLxH) {ucX} x {ucY} x {ucZ}"
+					unitCountStr = F"{ucX}{ucY}{ucZ}"
+					unitCountDirStr = "{}x{}x{}_units__{}x{}x{}_mm".format(ucX, ucY, ucZ, s.componentSize[0], s.componentSize[1], s.componentSize[2])
 
-					# Rotate only patterns that require it
-					if "R" not in patternFlags and s.config["innerWallRotation"] != 0:
-						continue
+					# Drawer tray
+					for s.drawerTrayVersion in config.drawerTrayVersions:
+						with sg:
+							for key, value in s.drawerTrayVersion["config"].items():
+								s.config[key] = value
 
-					# Generate extra patterns only when explicitly requested
-					if "X" in patternFlags and not args.extraPatterns:
-						continue
+							drawerTrayVersionID = s.drawerTrayVersion["id"]
 
-					compartmentsTransformId = s.compartmentsTransform["id"]
+							if system.shouldGenerateComponent(s, "drawerTray"):
+								cDir = F"{outputDir}/{systemDirName}/drawer_trays"
+								cName = F"{systemName}_W{unitCountStr}"
+								fName = F"{systemName}_W{unitCountStr}{drawerTrayVersionID}"
 
-					prevCfg2 = s.config
-					for s.compartmentsHeight in config.compartmentsHeights:
-						s.config = copy.deepcopy(prevCfg2)
+								# Index title
+								index.addToIndex(cDir, "0_T",
+									"# {}_W*\n".format(systemName)
+									+ "* System: {}\n".format(systemName)
+									+ "* Path: `{}`\n".format(cDir)
+									+ "# Components\n"
+									)
 
-						for key, value in s.compartmentsHeight["config"].items():
-							s.config[key] = value
+								# Index common
+								index.addToIndex(cDir, "1#/{}#/0_T".format(cName),
+									"## {}\n".format(cName)
+									+ "* Unit count: {}\n".format(unitCountText)
+									+ "* Component size: {}\n\n".format(componentSizeText)
+									)
 
-						# Do not generate non-full inner wall variants unless explicitly requested
-						if s.config["innerWallPercentageHeight"] != 1 and not args.compartmentHeightVariants:
-							continue
+								# Index item
+								index.addToIndex(cDir, "1#/{}#/1_COLS/{}".format(cName, fName), [
+									"**{}**".format(fName),
+									s.drawerTrayVersion["text"],
+									index.releasesListStr(s, "", ""),
+									"![preview](png/{}.png)".format(fName)
+									])
 
-						compartmentsHeightId = s.compartmentsHeight["id"]
+								# Spacing after
+								index.addToIndex(cDir, "1#/{}#/2_T".format(cName), "\n---\n")
 
-						# Tray - no need for swapped width/height as they are symmetrical
-						if ucX >= ucY and (ucX != ucY or s.config["innerWallRotation"] == 0) and system.shouldGenerateComponent(s, "tray"):
-							cDir = F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}"
-							fName = F"{systemName}_T{unitCountStr}{compartmentsHeightId}_{patternName}{compartmentsTransformId}"
-							cName = F"{systemName}_T{unitCountStr}_{patternName}"
-
-							executor.submit(funcs.compileScad,
-								"tray",
-								cDir, fName, copy.deepcopy(s.targetReleases),
-								copy.deepcopy(s.config), systemConfig
-							)
-
-							index.componentAddToIndex(s, cDir, fName, cName)
-
-						# Drawer
-						if system.shouldGenerateComponent(s, "drawer"):
-							cDir = F"{outputDir}/{systemDirName}/drawers/{unitCountDirStr}"
-							fName = F"{systemName}_D{unitCountStr}{compartmentsHeightId}_{patternName}{compartmentsTransformId}"
-							cName = F"{systemName}_D{unitCountStr}_{patternName}"
-
-							executor.submit(funcs.compileScad,
-								"drawer",
-								cDir, fName, copy.deepcopy(s.targetReleases),
-								copy.deepcopy(s.config), systemConfig
+								executor.submit(funcs.compileScad,
+									"drawer_tray",
+									cDir, fName, copy.deepcopy(s.targetReleases),
+									copy.deepcopy(s.config), systemConfig
 								)
 
-							index.componentAddToIndex(s, cDir, fName, cName)
+					for pattern in config.patterns:
+						with sg:
+							patternBaseName = os.path.basename(os.path.splitext(pattern)[0])
+							patternMatch = re.fullmatch("(.*?)(?:_x([A-Z]*))?", patternBaseName)
+							patternName = patternMatch.group(1)
+							patternFlags = str(patternMatch.group(2))
+
+							s.config["innerWallPatternFile"] = pattern
+
+							for s.compartmentsTransform in config.compartmentsTransforms:
+								with sg:
+									for key, value in s.compartmentsTransform["config"].items():
+										s.config[key] = value
+
+									# Rotate only patterns that require it
+									if "R" not in patternFlags and s.config["innerWallRotation"] != 0:
+										continue
+
+									# Generate extra patterns only when explicitly requested
+									if "X" in patternFlags and not args.extraPatterns:
+										continue
+
+									compartmentsTransformId = s.compartmentsTransform["id"]
+
+									for s.compartmentsHeight in config.compartmentsHeights:
+										with sg:
+											for key, value in s.compartmentsHeight["config"].items():
+												s.config[key] = value
+
+											# Do not generate non-full inner wall variants unless explicitly requested
+											if s.config["innerWallPercentageHeight"] != 1 and not args.compartmentHeightVariants:
+												continue
+
+											compartmentsHeightId = s.compartmentsHeight["id"]
+
+											# Tray - no need for swapped width/height as they are symmetrical
+											if ucX >= ucY and (ucX != ucY or s.config["innerWallRotation"] == 0) and system.shouldGenerateComponent(s, "tray"):
+												cDir = F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}"
+												fName = F"{systemName}_T{unitCountStr}{compartmentsHeightId}_{patternName}{compartmentsTransformId}"
+												cName = F"{systemName}_T{unitCountStr}_{patternName}"
+
+												executor.submit(funcs.compileScad,
+													"tray",
+													cDir, fName, copy.deepcopy(s.targetReleases),
+													copy.deepcopy(s.config), systemConfig
+												)
+
+												index.componentAddToIndex(s, cDir, fName, cName)
+
+											# Drawer
+											if system.shouldGenerateComponent(s, "drawer"):
+												cDir = F"{outputDir}/{systemDirName}/drawers/{unitCountDirStr}"
+												fName = F"{systemName}_D{unitCountStr}{compartmentsHeightId}_{patternName}{compartmentsTransformId}"
+												cName = F"{systemName}_D{unitCountStr}_{patternName}"
+
+												executor.submit(funcs.compileScad,
+													"drawer",
+													cDir, fName, copy.deepcopy(s.targetReleases),
+													copy.deepcopy(s.config), systemConfig
+													)
+
+												index.componentAddToIndex(s, cDir, fName, cName)
 
 	executor.shutdown()
 	executor = concurrent.futures.ThreadPoolExecutor()
@@ -207,7 +241,7 @@ def main():
 		print("Zipping...")
 
 		def mzip(zipFileName):
-			z = zipfile.ZipFile(zipFileName, "w")
+			z = zipfile.ZipFile(zipFileName, "w", compression=zipfile.ZIP_LZMA, compresslevel=9)
 
 			for stlFileName in funcs.zips[zipFileName]:
 				print(F"Packing '{stlFileName}' -> '{zipFileName}'")

@@ -4,10 +4,11 @@ class GeneratorState:
 	system = None
 	componentSize = None
 
-	config = None
+	config = {}
 	systemConfig = None
 
 	compartmentsHeight = None
 	compartmentsTransform = None
+	drawerTrayVersion = None
 
 	targetReleases = []

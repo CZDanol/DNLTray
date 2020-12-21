@@ -20,6 +20,33 @@ System contains:
 - You can adjust parameters/add your own patterns and recompile (python required)
 	- Feel free to use pull requests
 
+# File naming convention
+`(system)_(type)(w)(l)(h)(flags)_(pattern)(patternFlags)`
+
+* `system`
+  * Component system. Different systems can vary in base unit size and other parameters and don't have to be cross-compatible.
+* `component`
+  * Component type:
+    * `T`: Tray; a component with open top, basically a bin
+    * `D`: Drawer
+    * `W`: Drawer tray - slot for a drawer
+* `w, l, h`
+  * Width, length, height - size of the component (in base unit counts)
+* `flags`
+  * Various flags, depending on the component type:
+    * `F`: Internal compartments are up to the full height
+    * `H`: Internal compartments are up to half the height of the component
+    * `L`: Lightweight
+      * For drawer trays, the floor is removed because it's not necessary
+* `pattern`
+  * Pattern of the inner compartments
+* `patternFlags`
+  * Flags further modifying the pattern:
+    * `R`: The pattern is rotated by 90°. This can be useful in drawers or if the component is not square sized.
+
+For example:
+* `A_T221F_1x1R`
+
 # Print recommendations
 * PLA
 * Standard 0.2mm layers
@@ -43,12 +70,8 @@ System contains:
 
 # To-do
 - Half-height variants for trays with height > 1?
-- Bigger preview images
-- python with statement
 - Maybe thicker walls for larger bins?
 - Releases
-- Pattern flag explanations
-- No-bottom drawer trays
 - Lids
   * With and without border
   * High lids

@@ -81,7 +81,7 @@ def main():
 			s.system = system
 
 			systemName = system.name
-			systemDirName = "SYS_" + systemName
+			systemDirName = "{}__system_{}".format(systemName, systemName)
 
 			s.config["systemConfigFilePath"] = F"{outputDir}/{systemDirName}/system_config.scad"
 
@@ -99,9 +99,9 @@ def main():
 				"# System {}\n".format(systemName)
 				+ "Unit size: {} x {} x {} mm\n".format(s.config["unitSize"][0], s.config["unitSize"][1], s.config["unitSize"][2])
 				+ "## Directories\n"
-				+ "* [Trays](trays/): Standard bins you put things to from top\n"
-				+ "* [Drawers](drawers/): Well, drawers\n"
-				+ "* [Drawer trays](drawer_trays/): Trays you put the drawers to, basically drawer slots\n"
+				+ "* [Trays](T__trays/): Standard bins you put things to from top\n"
+				+ "* [Drawers](D__drawers/): Well, drawers\n"
+				+ "* [Drawer trays](W__drawer_trays/): Trays you put the drawers to, basically drawer slots\n"
 				)
 
 			index.addToIndex(
@@ -121,7 +121,7 @@ def main():
 
 					unitCountText = F"(WxLxH) {ucX} x {ucY} x {ucZ}"
 					unitCountStr = F"{ucX}{ucY}{ucZ}"
-					unitCountDirStr = "{}x{}x{}_units__{}x{}x{}_mm".format(ucX, ucY, ucZ, s.componentSize[0], s.componentSize[1], s.componentSize[2])
+					unitCountDirStr = "{}{}{}__{}x{}x{}_units__{}x{}x{}_mm".format(ucX, ucY, ucZ, ucX, ucY, ucZ, s.componentSize[0], s.componentSize[1], s.componentSize[2])
 
 					# Drawer tray
 					for s.drawerTrayVersion in config.drawerTrayVersions:
@@ -132,7 +132,7 @@ def main():
 							drawerTrayVersionID = s.drawerTrayVersion["id"]
 
 							if system.shouldGenerateComponent(s, "drawerTray"):
-								cDir = F"{outputDir}/{systemDirName}/drawer_trays"
+								cDir = F"{outputDir}/{systemDirName}/W__drawer_trays"
 								cName = F"{systemName}_W{unitCountStr}"
 								fName = F"{systemName}_W{unitCountStr}{drawerTrayVersionID}"
 
@@ -205,7 +205,7 @@ def main():
 
 											# Tray - no need for swapped width/height as they are symmetrical
 											if ucX >= ucY and (ucX != ucY or s.config["innerWallRotation"] == 0) and system.shouldGenerateComponent(s, "tray"):
-												cDir = F"{outputDir}/{systemDirName}/trays/{unitCountDirStr}"
+												cDir = F"{outputDir}/{systemDirName}/T__trays/{unitCountDirStr}"
 												fName = F"{systemName}_T{unitCountStr}{compartmentsHeightId}_{patternName}{compartmentsTransformId}"
 												cName = F"{systemName}_T{unitCountStr}_{patternName}"
 
@@ -219,7 +219,7 @@ def main():
 
 											# Drawer
 											if system.shouldGenerateComponent(s, "drawer"):
-												cDir = F"{outputDir}/{systemDirName}/drawers/{unitCountDirStr}"
+												cDir = F"{outputDir}/{systemDirName}/D__drawers/{unitCountDirStr}"
 												fName = F"{systemName}_D{unitCountStr}{compartmentsHeightId}_{patternName}{compartmentsTransformId}"
 												cName = F"{systemName}_D{unitCountStr}_{patternName}"
 

@@ -73,7 +73,7 @@ def releasesListStr(s, prefix = "", suffix = ""):
 	if not s.targetReleases:
 		return ""
 
-	return "{}STL: {}{}".format(prefix, ", ".join(rel for rel in s.targetReleases), suffix)
+	return "{}STL: {}{}".format(prefix, ", ".join("[{}](https://github.com/CZDanol/DNLTray/releases/latest/download/DNLTray_{}.zip)".format(rel, rel) for rel in s.targetReleases), suffix)
 
 def componentAddToIndex(s, cDir, fName, cName):
 	# Index title

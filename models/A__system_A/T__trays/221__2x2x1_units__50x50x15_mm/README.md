@@ -1,7 +1,7 @@
 # A_T221
 * System: A
 * Unit count: 2 x 2 x 1 units
-* Component size: (WxHxL) 50 x 50 x 15 mm
+* Component size: (WxLxH) 50 x 50 x 15 mm
 * Path: `models/A__system_A/T__trays/221__2x2x1_units__50x50x15_mm`
 # Components
 ## A_T221_1-2-1_1

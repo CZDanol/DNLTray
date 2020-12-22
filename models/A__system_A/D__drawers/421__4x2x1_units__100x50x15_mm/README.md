@@ -1,7 +1,7 @@
 # A_T421
 * System: A
 * Unit count: 4 x 2 x 1 units
-* Component size: (WxHxL) 100 x 50 x 15 mm
+* Component size: (WxLxH) 100 x 50 x 15 mm
 * Path: `models/A__system_A/D__drawers/421__4x2x1_units__100x50x15_mm`
 # Components
 ## A_D421_1-2-1_1

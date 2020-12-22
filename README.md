@@ -3,15 +3,11 @@
 
 **WORK IN PROGRESS**
 
-**Due to size limitations, the repository doesn't contain .stl files. A selection of them is available in releases. The rest you have to build yourself. Simply download this repository, open the appropriate scad file and compile it.**
+Due to size limitations, the repository doesn't contain .stl files. A selection of them is available in releases. The rest you have to build yourself. Simply download this repository, open the appropriate scad file and compile it. You can also use the attached python script and compile it using `python generate.py -m (model name) -c (scad binary filepath) --stl`
 
 **You can see gallery of all components in the models/ folder.**
 
 # Features
-System contains:
-	- Trays/bins
-	- Drawers
-
 - **Previews everywhere**. Just look in the `models` directory structure, every component has an image preview. 
 - 3D printable (duh)
 - Zero supports required
@@ -53,11 +49,14 @@ For example:
 * PLA
 * Standard 0.2mm layers
 * No supports
-* Maybe add a 5mm brim so that the models don't warp (it's a little pain to get it off though)
 
 # License
 - Free for non-commercial use
 - If you intend to use the designs commercially, please contact me to negotiate a commission.
+
+## Contact
+* Discord: Danol#2663
+* Mail: czdanol@gmail.com
   
 # Customizing
 - Download the whole repo
@@ -71,6 +70,7 @@ For example:
 - Always put four rectangles around the pattern (determining position of outer walls)
 
 # To-do
+- Frames – you can put other organizers on (inner horizontal mounts don't fall through)
 - Half-height variants for trays with height > 1?
 - Maybe thicker walls for larger bins?
 - Releases

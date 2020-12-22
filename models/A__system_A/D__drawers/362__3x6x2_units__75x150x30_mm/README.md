@@ -1,7 +1,7 @@
 # A_T362
 * System: A
 * Unit count: 3 x 6 x 2 units
-* Component size: (WxHxL) 75 x 150 x 30 mm
+* Component size: (WxLxH) 75 x 150 x 30 mm
 * Path: `models/A__system_A/D__drawers/362__3x6x2_units__75x150x30_mm`
 # Components
 ## A_D362_1-2-1_1

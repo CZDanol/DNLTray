@@ -1,7 +1,7 @@
 # A_T461
 * System: A
 * Unit count: 4 x 6 x 1 units
-* Component size: (WxHxL) 100 x 150 x 15 mm
+* Component size: (WxLxH) 100 x 150 x 15 mm
 * Path: `models/A__system_A/D__drawers/461__4x6x1_units__100x150x15_mm`
 # Components
 ## A_D461_1-2-1_1

@@ -1,7 +1,7 @@
 # A_T642
 * System: A
 * Unit count: 6 x 4 x 2 units
-* Component size: (WxHxL) 150 x 100 x 30 mm
+* Component size: (WxLxH) 150 x 100 x 30 mm
 * Path: `models/A__system_A/T__trays/642__6x4x2_units__150x100x30_mm`
 # Components
 ## A_T642_1-2-1_1

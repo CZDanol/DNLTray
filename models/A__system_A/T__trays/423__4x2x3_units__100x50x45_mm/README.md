@@ -1,7 +1,7 @@
 # A_T423
 * System: A
 * Unit count: 4 x 2 x 3 units
-* Component size: (WxHxL) 100 x 50 x 45 mm
+* Component size: (WxLxH) 100 x 50 x 45 mm
 * Path: `models/A__system_A/T__trays/423__4x2x3_units__100x50x45_mm`
 # Components
 ## A_T423_1-2-1_1

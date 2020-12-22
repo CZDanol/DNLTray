@@ -1,7 +1,7 @@
 # A_T626
 * System: A
 * Unit count: 6 x 2 x 6 units
-* Component size: (WxHxL) 150 x 50 x 90 mm
+* Component size: (WxLxH) 150 x 50 x 90 mm
 * Path: `models/A__system_A/T__trays/626__6x2x6_units__150x50x90_mm`
 # Components
 ## A_T626_1-2-1_1

@@ -1,7 +1,7 @@
 # A_T643
 * System: A
 * Unit count: 6 x 4 x 3 units
-* Component size: (WxHxL) 150 x 100 x 45 mm
+* Component size: (WxLxH) 150 x 100 x 45 mm
 * Path: `models/A__system_A/T__trays/643__6x4x3_units__150x100x45_mm`
 # Components
 ## A_T643_1-2-1_1

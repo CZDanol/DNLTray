@@ -1,7 +1,7 @@
 # A_T431
 * System: A
 * Unit count: 4 x 3 x 1 units
-* Component size: (WxHxL) 100 x 75 x 15 mm
+* Component size: (WxLxH) 100 x 75 x 15 mm
 * Path: `models/A__system_A/T__trays/431__4x3x1_units__100x75x15_mm`
 # Components
 ## A_T431_1-2-1_1

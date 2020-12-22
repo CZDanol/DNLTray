@@ -1,7 +1,7 @@
 # A_T636
 * System: A
 * Unit count: 6 x 3 x 6 units
-* Component size: (WxHxL) 150 x 75 x 90 mm
+* Component size: (WxLxH) 150 x 75 x 90 mm
 * Path: `models/A__system_A/T__trays/636__6x3x6_units__150x75x90_mm`
 # Components
 ## A_T636_1-2-1_1

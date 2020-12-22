@@ -1,7 +1,7 @@
 # A_T424
 * System: A
 * Unit count: 4 x 2 x 4 units
-* Component size: (WxHxL) 100 x 50 x 60 mm
+* Component size: (WxLxH) 100 x 50 x 60 mm
 * Path: `models/A__system_A/D__drawers/424__4x2x4_units__100x50x60_mm`
 # Components
 ## A_D424_1-2-1_1

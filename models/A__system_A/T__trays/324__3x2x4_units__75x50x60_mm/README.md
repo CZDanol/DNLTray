@@ -1,7 +1,7 @@
 # A_T324
 * System: A
 * Unit count: 3 x 2 x 4 units
-* Component size: (WxHxL) 75 x 50 x 60 mm
+* Component size: (WxLxH) 75 x 50 x 60 mm
 * Path: `models/A__system_A/T__trays/324__3x2x4_units__75x50x60_mm`
 # Components
 ## A_T324_1-2-1_1

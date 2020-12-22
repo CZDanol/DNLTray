@@ -1,7 +1,7 @@
 # A_T442
 * System: A
 * Unit count: 4 x 4 x 2 units
-* Component size: (WxHxL) 100 x 100 x 30 mm
+* Component size: (WxLxH) 100 x 100 x 30 mm
 * Path: `models/A__system_A/D__drawers/442__4x4x2_units__100x100x30_mm`
 # Components
 ## A_D442_1-2-1_1

@@ -1,7 +1,7 @@
 # A_T323
 * System: A
 * Unit count: 3 x 2 x 3 units
-* Component size: (WxHxL) 75 x 50 x 45 mm
+* Component size: (WxLxH) 75 x 50 x 45 mm
 * Path: `models/A__system_A/T__trays/323__3x2x3_units__75x50x45_mm`
 # Components
 ## A_T323_1-2-1_1

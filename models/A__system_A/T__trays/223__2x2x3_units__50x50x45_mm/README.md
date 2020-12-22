@@ -1,7 +1,7 @@
 # A_T223
 * System: A
 * Unit count: 2 x 2 x 3 units
-* Component size: (WxHxL) 50 x 50 x 45 mm
+* Component size: (WxLxH) 50 x 50 x 45 mm
 * Path: `models/A__system_A/T__trays/223__2x2x3_units__50x50x45_mm`
 # Components
 ## A_T223_1-2-1_1

@@ -1,7 +1,7 @@
 # A_T222
 * System: A
 * Unit count: 2 x 2 x 2 units
-* Component size: (WxHxL) 50 x 50 x 30 mm
+* Component size: (WxLxH) 50 x 50 x 30 mm
 * Path: `models/A__system_A/T__trays/222__2x2x2_units__50x50x30_mm`
 # Components
 ## A_T222_1-2-1_1

@@ -1,7 +1,7 @@
 # A_T334
 * System: A
 * Unit count: 3 x 3 x 4 units
-* Component size: (WxHxL) 75 x 75 x 60 mm
+* Component size: (WxLxH) 75 x 75 x 60 mm
 * Path: `models/A__system_A/T__trays/334__3x3x4_units__75x75x60_mm`
 # Components
 ## A_T334_1-2-1_1

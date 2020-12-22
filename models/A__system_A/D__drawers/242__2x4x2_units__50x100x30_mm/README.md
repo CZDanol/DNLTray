@@ -1,7 +1,7 @@
 # A_T242
 * System: A
 * Unit count: 2 x 4 x 2 units
-* Component size: (WxHxL) 50 x 100 x 30 mm
+* Component size: (WxLxH) 50 x 100 x 30 mm
 * Path: `models/A__system_A/D__drawers/242__2x4x2_units__50x100x30_mm`
 # Components
 ## A_D242_1-2-1_1

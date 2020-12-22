@@ -1,7 +1,7 @@
 # A_T631
 * System: A
 * Unit count: 6 x 3 x 1 units
-* Component size: (WxHxL) 150 x 75 x 15 mm
+* Component size: (WxLxH) 150 x 75 x 15 mm
 * Path: `models/A__system_A/T__trays/631__6x3x1_units__150x75x15_mm`
 # Components
 ## A_T631_1-2-1_1

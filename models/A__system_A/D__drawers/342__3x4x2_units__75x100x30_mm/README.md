@@ -1,7 +1,7 @@
 # A_T342
 * System: A
 * Unit count: 3 x 4 x 2 units
-* Component size: (WxHxL) 75 x 100 x 30 mm
+* Component size: (WxLxH) 75 x 100 x 30 mm
 * Path: `models/A__system_A/D__drawers/342__3x4x2_units__75x100x30_mm`
 # Components
 ## A_D342_1-2-1_1

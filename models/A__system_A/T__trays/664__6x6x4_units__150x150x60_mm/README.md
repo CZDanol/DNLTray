@@ -1,7 +1,7 @@
 # A_T664
 * System: A
 * Unit count: 6 x 6 x 4 units
-* Component size: (WxHxL) 150 x 150 x 60 mm
+* Component size: (WxLxH) 150 x 150 x 60 mm
 * Path: `models/A__system_A/T__trays/664__6x6x4_units__150x150x60_mm`
 # Components
 ## A_T664_1-2-1_1

@@ -81,7 +81,7 @@ def componentAddToIndex(s, cDir, fName, cName):
 		"# {}_T{}{}{}\n".format(s.system.name, s.config["unitCount"][0], s.config["unitCount"][1], s.config["unitCount"][2])
 		+ "* System: {}\n".format(s.system.name)
 		+ "* Unit count: {} x {} x {} units\n".format(s.config["unitCount"][0], s.config["unitCount"][1], s.config["unitCount"][2])
-		+ "* Component size: (WxHxL) {} x {} x {} mm\n".format(s.componentSize[0], s.componentSize[1], s.componentSize[2])
+		+ "* Component size: (WxLxH) {} x {} x {} mm\n".format(s.componentSize[0], s.componentSize[1], s.componentSize[2])
 		+ "* Path: `{}`\n".format(cDir)
 		+ "# Components\n"
 		)

@@ -1,7 +1,7 @@
 # A_T322
 * System: A
 * Unit count: 3 x 2 x 2 units
-* Component size: (WxHxL) 75 x 50 x 30 mm
+* Component size: (WxLxH) 75 x 50 x 30 mm
 * Path: `models/A__system_A/T__trays/322__3x2x2_units__75x50x30_mm`
 # Components
 ## A_T322_1-2-1_1

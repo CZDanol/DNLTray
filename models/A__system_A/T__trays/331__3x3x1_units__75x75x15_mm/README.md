@@ -1,7 +1,7 @@
 # A_T331
 * System: A
 * Unit count: 3 x 3 x 1 units
-* Component size: (WxHxL) 75 x 75 x 15 mm
+* Component size: (WxLxH) 75 x 75 x 15 mm
 * Path: `models/A__system_A/T__trays/331__3x3x1_units__75x75x15_mm`
 # Components
 ## A_T331_1-2-1_1

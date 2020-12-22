@@ -1,7 +1,7 @@
 # A_T341
 * System: A
 * Unit count: 3 x 4 x 1 units
-* Component size: (WxHxL) 75 x 100 x 15 mm
+* Component size: (WxLxH) 75 x 100 x 15 mm
 * Path: `models/A__system_A/D__drawers/341__3x4x1_units__75x100x15_mm`
 # Components
 ## A_D341_1-2-1_1

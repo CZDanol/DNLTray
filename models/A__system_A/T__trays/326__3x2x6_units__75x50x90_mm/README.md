@@ -1,7 +1,7 @@
 # A_T326
 * System: A
 * Unit count: 3 x 2 x 6 units
-* Component size: (WxHxL) 75 x 50 x 90 mm
+* Component size: (WxLxH) 75 x 50 x 90 mm
 * Path: `models/A__system_A/T__trays/326__3x2x6_units__75x50x90_mm`
 # Components
 ## A_T326_1-2-1_1

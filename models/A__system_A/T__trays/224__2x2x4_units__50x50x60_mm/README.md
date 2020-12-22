@@ -1,7 +1,7 @@
 # A_T224
 * System: A
 * Unit count: 2 x 2 x 4 units
-* Component size: (WxHxL) 50 x 50 x 60 mm
+* Component size: (WxLxH) 50 x 50 x 60 mm
 * Path: `models/A__system_A/T__trays/224__2x2x4_units__50x50x60_mm`
 # Components
 ## A_T224_1-2-1_1

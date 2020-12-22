@@ -1,7 +1,7 @@
 # A_T262
 * System: A
 * Unit count: 2 x 6 x 2 units
-* Component size: (WxHxL) 50 x 150 x 30 mm
+* Component size: (WxLxH) 50 x 150 x 30 mm
 * Path: `models/A__system_A/D__drawers/262__2x6x2_units__50x150x30_mm`
 # Components
 ## A_D262_1-2-1_1

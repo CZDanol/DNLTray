@@ -1,7 +1,7 @@
 # A_T436
 * System: A
 * Unit count: 4 x 3 x 6 units
-* Component size: (WxHxL) 100 x 75 x 90 mm
+* Component size: (WxLxH) 100 x 75 x 90 mm
 * Path: `models/A__system_A/T__trays/436__4x3x6_units__100x75x90_mm`
 # Components
 ## A_T436_1-2-1_1

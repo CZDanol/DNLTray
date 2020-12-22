@@ -1,5 +1,6 @@
 # DNLTray - Danol's ultimaze organizer system
-[](etc/img1.jpg)
+![](etc/img1.jpg)
+
 **WORK IN PROGRESS**
 
 **Due to size limitations, the repository doesn't contain .stl files. A selection of them is available in releases. The rest you have to build yourself. Simply download this repository, open the appropriate scad file and compile it.**

@@ -68,45 +68,68 @@ module horizontalMountProfile() {
 	dp = horizontalMountDepth;
 	ew = horizontalMountExtWidth/2;
 	bw = horizontalMountBaseWidth/2;
+	
 	polygon([[0, bw], [dp, ew], [dp, -ew], [0, -bw]]);
 }
+module horizontalMountKickIn(a) {
+	d = rotatedDimensions[a];
+	dUnitSize = unitSize[d];
+
+	dp = horizontalMountDepth;
+
+	rotate([90, 0, 0]) linear_extrude(dUnitSize, center=true) polygon([[0, 0.5], [0, 0], [dp, 0], [dp, horizontalMountKickIn]]);
+}
+module horizontalMount(a, inclKickIn = false) {
+	d = rotatedDimensions[a];
+	dUnitSize = unitSize[d];
+	vUnitSize = unitSize[2];
+
+	dp = horizontalMountDepth;
+	ew = horizontalMountExtWidth/2;
+	
+	difference() {
+		union() {
+			// Male connector
+			translate([0, horizontalMountConenctorDistance, 0]) linear_extrude(vUnitSize / 2) horizontalMountProfile();
+
+			// Female connector
+			translate([0, -horizontalMountConenctorDistance, 0]) linear_extrude(vUnitSize / 2) difference() {
+				translate([0, -ew * 2, 0]) square([dp, ew * 4]);
+				translate([dp, 0, 0]) rotate([0, 0, 180]) offset(delta=horizontalMountTolerance) horizontalMountProfile();
+			}
+
+			if(inclKickIn)
+				horizontalMountKickIn(a);
+		}
+
+		// Kick in
+		if(!inclKickIn)
+			horizontalMountKickIn(a);
+
+		// Kick out
+		translate([0, 0, unitSize[2] / 2]) rotate([90, 0, 0]) linear_extrude(dUnitSize, center=true) polygon([[0, 0], [dp, 0], [dp, -horizontalMountKickOut]]);
+	}
+}
+
 module horizontalMounts(skipFront = false) {
 	for(a = [0 : 3]) if(a != 1 || !skipFront) translate(absCornerPositions[a]) rotate(a * 90) {
 		d = rotatedDimensions[a];
 		dUnitSize = unitSize[d];
-		hUnitSize = unitSize[2];
+		vUnitSize = unitSize[2];
 
 		dp = horizontalMountDepth;
-		ew = horizontalMountExtWidth/2;
-		bw = horizontalMountBaseWidth/2;
 
 		for(x = [0 : unitCount[d] - 1]) {
-			for(z = [0 : unitCount[2] - 1]) translate([-dp/2, dUnitSize * (x + 0.5), hUnitSize * z]) {
-				difference() {
-					union() {
-						// Male connector
-						translate([0, horizontalMountConenctorDistance, 0]) linear_extrude(hUnitSize / 2) horizontalMountProfile();
-
-						// Female connector
-						translate([0, -horizontalMountConenctorDistance, 0]) linear_extrude(hUnitSize / 2) difference() {
-							translate([0, -ew * 2, 0]) square([dp, ew * 4]);
-							translate([dp, 0, 0]) rotate([0, 0, 180]) offset(delta=horizontalMountTolerance) horizontalMountProfile();
-						}
-					}
-
-					// Kick in
-					rotate([90, 0, 0]) linear_extrude(dUnitSize, center=true) polygon([[0, 0], [dp, 0], [dp, horizontalMountKickIn]]);
-
-					// Kick out
-					translate([0, 0, unitSize[2] / 2]) rotate([90, 0, 0]) linear_extrude(dUnitSize, center=true) polygon([[0, 0], [dp, 0], [dp, -horizontalMountKickOut]]);
-				}
+			for(z = [0 : unitCount[2] - 1]) {
+				translate([-dp/2, dUnitSize * (x + 0.5), vUnitSize * z])
+				horizontalMount(a);
 			}
 		}
 	}
 }
 
 module verticalMountsProfileUnit(delta, onlySquare=false) {
-	pts = [[-verticalMountWidth/2, 0], [0, verticalMountHeight], [verticalMountWidth/2, 0]];
+	pts = [[-verticalMountWidth/2, 0], [-verticalMountWidth/2, verticalMountHeight/2], [0, verticalMountHeight], [verticalMountWidth/2, verticalMountHeight/2], [verticalMountWidth/2, 0]];
 
 	if(onlySquare)
 		square([verticalMountWidth + delta*2, verticalMountLength + delta*2], center=true);
@@ -154,7 +177,7 @@ module verticalMountsIncl(floorOutlineOnly=false) {
 	}
 
 	// Bottom reinforcement
-	linear_extrude(verticalMountHeight + verticalMountClearance) intersection() {
+	linear_extrude(verticalMountHeight + verticalMountClearance + verticalMountTolerance) intersection() {
 		verticalMountsProfile(delta=verticalMountReinforcementDistance, onlySquare=true, inner=!floorOutlineOnly);
 		componentPerimeter();
 	}

@@ -28,6 +28,7 @@ Due to size limitations, the repository doesn't contain .stl files. A selection 
     * `T`: Tray; a component with open top, basically a bin
     * `D`: Drawer
     * `W`: Drawer tray - slot for a drawer
+    * `L`: Wall/stand
 * `w, l, h`
   * Width, length, height - size of the component (in base unit counts)
 * `flags`
@@ -71,9 +72,11 @@ For example:
 
 # To-do
 - Frames – you can put other organizers on (inner horizontal mounts don't fall through)
+- Shelves - without front side
+- STL fixed patterns
+- Hex bit patterns
 - Half-height variants for trays with height > 1?
 - Maybe thicker walls for larger bins?
-- Releases
 - Lids
   * With and without border
   * High lids

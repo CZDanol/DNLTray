@@ -123,6 +123,44 @@ def main():
 					unitCountStr = F"{ucX}{ucY}{ucZ}"
 					unitCountDirStr = "{}{}{}__{}x{}x{}_units__{}x{}x{}_mm".format(ucX, ucY, ucZ, ucX, ucY, ucZ, s.componentSize[0], s.componentSize[1], s.componentSize[2])
 
+					if ucY == 1:
+						with sg:
+							if system.shouldGenerateComponent(s, "wall"):
+								cDir = F"{outputDir}/{systemDirName}/L__walls"
+								cName = F"{systemName}_L{unitCountStr}"
+								fName = F"{systemName}_L{unitCountStr}"
+
+								# Index title
+								index.addToIndex(cDir, "0_T",
+									"# {}_L*\n".format(systemName)
+									+ "* System: {}\n".format(systemName)
+									+ "* Path: `{}`\n".format(cDir)
+									+ "# Components\n"
+									)
+
+								# Index common
+								index.addToIndex(cDir, "1#/{}#/0_T".format(cName),
+									"## {}\n".format(cName)
+									+ "* Unit count: {}\n".format(unitCountText)
+									+ "* Component size: {}\n\n".format(componentSizeText)
+									)
+
+								# Index item
+								index.addToIndex(cDir, "1#/{}#/1_COLS/{}".format(cName, fName), [
+									"**{}**".format(fName),
+									index.releasesListStr(s, "", ""),
+									"![preview](png/{}.png)".format(fName)
+									])
+
+								# Spacing after
+								index.addToIndex(cDir, "1#/{}#/2_T".format(cName), "\n---\n")
+
+								executor.submit(funcs.compileScad,
+									"wall",
+									cDir, fName, copy.deepcopy(s.targetReleases),
+									copy.deepcopy(s.config), systemConfig
+								)
+
 					# Drawer tray
 					for s.drawerTrayVersion in config.drawerTrayVersions:
 						with sg:

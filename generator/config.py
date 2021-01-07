@@ -144,10 +144,10 @@ defaultConfig = {
 	"verticalMountInset": 2,
 
 	# How much extra vertical space is in the female vertical mount
-	"verticalMountClearance": 0.4,
+	"verticalMountClearance": 0.2,
 
 	# How much extra horizontal space is in the female vertical mount
-	"verticalMountTolerance": 0.3,
+	"verticalMountTolerance": 0.4,
 
 	# Plastic around the vertical mount hole
 	"verticalMountReinforcementDistance": 1,
@@ -225,4 +225,13 @@ defaultConfig = {
 
 	# Width of the handle outline
 	"drawerHandleWidth": 1,
+
+	# WALLS
+	# =========================
+
+	# Width of the wall (in mm)
+	"wallWidth": 2,
+
+	# Diameter of the hole for a screw
+	"screwHoleDiameter": 4,
 }

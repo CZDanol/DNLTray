@@ -31,7 +31,7 @@ class System_A(systems.System):
 				return False
 
 			if uc[2] in [1, 2, 4, 6, 8] and uc[0:2] in [[2, 2], [3, 3], [4, 2], [4, 4], [6, 2], [6, 4], [6, 6], [8, 2], [8, 4], [8, 6], [8, 8]]:
-				s.targetReleases.append("trays")
+				s.targetReleases += ["trays"]
 
 		elif t == "drawerTray" or t == "drawer":
 			if uc[0] not in [2, 3, 4]:
@@ -47,7 +47,16 @@ class System_A(systems.System):
 				return False
 
 			if uc in [[2, 2, 2], [4, 2, 2], [2, 3, 2], [2, 4, 2], [3, 4, 2], [4, 4, 4]]:
-				s.targetReleases.append("drawers")
+				s.targetReleases += ["drawers"]
+
+		elif t == "wall":
+			if uc[0] not in [1, 2, 3, 4, 6, 8]:
+				return False
+
+			if uc[2] not in [1, 2, 4, 6, 8]:
+				return False
+
+			s.targetReleases += ["drawers", "trays"]
 
 		else:
 			raise Exception("Not supported: " + t)

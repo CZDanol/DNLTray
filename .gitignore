@@ -1,4 +1,4 @@
-models/
+models/**/.3mf
 generator/__pycache__/
 releases/
 loc_*

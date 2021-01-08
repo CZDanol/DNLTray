@@ -10,5 +10,6 @@ class GeneratorState:
 	compartmentsHeight = None
 	compartmentsTransform = None
 	drawerTrayVersion = None
+	shelfVersion = None
 
 	targetReleases = []

@@ -55,6 +55,21 @@ drawerTrayVersions = [
 	}
 ]
 
+shelfVersions = [
+	{
+		"id": "",
+		"text": "",
+		"config": {}
+	},
+	{
+		"id": "R",
+		"text": "With rail",
+		"config": {
+			"shelfRail": 1
+		}
+	}
+]
+
 defaultConfig = {
 	# CORE STUFF
 	# =======================
@@ -235,5 +250,9 @@ defaultConfig = {
 	# Diameter of the hole for a screw
 	"wallBottomScrewHoleDiameter": 4,
 	"wallTopScrewHoleDiameter": 8,
+
+	# SHELVES
+	# ==========================
+	"shelfRail": 0
 
 }

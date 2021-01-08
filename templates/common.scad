@@ -57,9 +57,10 @@ module outerWall() {
 module cornerReinforcementProfile() {
 	linear_extrude(absComponentSize[2]) polygon([[0, 0], [-cornerReinforcementSize, 0], [0, cornerReinforcementSize]]);
 }
-module cornerReinforcements() {
+module cornerReinforcements(skipFront=false) {
 	for(a = [0 : 3]) {
-		translate(adjCornerPositions[a]) rotate(a * 90) cornerReinforcementProfile();
+		if(!((a == 1 || a == 2) && skipFront))
+			translate(adjCornerPositions[a]) rotate(a * 90) cornerReinforcementProfile();
 	}
 }
 
@@ -138,7 +139,7 @@ module verticalMountsProfileUnit(delta, onlySquare=false) {
 }
 
 /* ---------- Vertical mounts ------------------ */
-module verticalMountsProfile(inner=true, delta=0, onlySquare=false) {
+module verticalMountsProfile(inner=true, delta=0, onlySquare=false, skipFront=false) {
 	offset = verticalMountInset + horizontalMountDepth / 2;
 	hvm = verticalMountLength;
 	ohvm = offset - hvm;
@@ -154,23 +155,25 @@ module verticalMountsProfile(inner=true, delta=0, onlySquare=false) {
 			if(inner || y == 0)
 				translate([unitSize[0] / 2, offset, 0]) rotate([0, 0, 90]) verticalMountsProfileUnit(delta, onlySquare);
 
-			if(inner || y == unitCount[1] - 1)	
+			if(inner || (y == unitCount[1] - 1 && !skipFront))	
 				translate([unitSize[0] / 2, unitSize[1] - offset, 0]) rotate([0, 0, 90]) verticalMountsProfileUnit(delta, onlySquare);
 		}
 	}
 }
-module verticalMountsIncl(floorOutlineOnly=false) {
+module verticalMountsIncl(floorOutlineOnly=false,skipTopFront=false) {
 	dp = verticalMountInset + horizontalMountDepth / 2;
 
 	// Male top
 	translate([0, 0, absComponentSize[2]])
-		verticalMountsProfile(inner = false);
+		verticalMountsProfile(inner = false, skipFront=skipTopFront);
 
 	// Top reinforcement
 	intersection() {
 		union() for(a = [0 : 3]) translate([0, 0, absComponentSize[2]]) translate(adjCornerPositions[a]) rotate(a * 90) {
-			d = rotatedDimensions[a];
-			rotate([90, 0, 180]) linear_extrude(adjComponentSize[d]) polygon([[0, -horizontalMountKickIn], [dp, 0], [0, 0]]);
+			if(!(a == 1 && skipTopFront)) {
+				d = rotatedDimensions[a];
+				rotate([90, 0, 180]) linear_extrude(adjComponentSize[d]) polygon([[0, -horizontalMountKickIn], [dp, 0], [0, 0]]);
+			}
 		}
 
 		linear_extrude(absComponentSize[2]) verticalMountsProfile(inner=false, delta=verticalMountReinforcementDistance, onlySquare=true);

@@ -7,6 +7,8 @@ Due to size limitations, the repository doesn't contain .stl files. A selection 
 
 **You can see gallery of all components in the models/ folder.**
 
+**We're using `.3mf` instead of `.stl` files because of their smaller size.**
+
 # Features
 - **Previews everywhere**. Just look in the `models` directory structure, every component has an image preview. 
 - 3D printable (duh)
@@ -27,8 +29,9 @@ Due to size limitations, the repository doesn't contain .stl files. A selection 
   * Component type:
     * `T`: Tray; a component with open top, basically a bin
     * `D`: Drawer
-    * `W`: Drawer tray - slot for a drawer
-    * `L`: Wall/stand
+    * `DT`: Drawer tray - slot for a drawer
+    * `W`: Wall (frame you hang the trays onto)
+    * `S`: Shelf (tray without a front side)
 * `w, l, h`
   * Width, length, height - size of the component (in base unit counts)
 * `flags`
@@ -72,7 +75,6 @@ For example:
 
 # To-do
 - Frames – you can put other organizers on (inner horizontal mounts don't fall through)
-- Shelves - without front side
 - STL fixed patterns
 - Hex bit patterns
 - Half-height variants for trays with height > 1?
@@ -80,8 +82,4 @@ For example:
 - Lids
   * With and without border
   * High lids
-- Side frames (vertically stackable)
-  - Corner side frames - not necessary (you can just use two separate frames)
-  - Double-sisded frames
-  - Single-sided frames
 - Articulating side frames (so you can open up the organizer)

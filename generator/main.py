@@ -133,7 +133,7 @@ def main():
 
 								# Index title
 								index.addToIndex(cDir, "0_T",
-									"# {}_L*\n".format(systemName)
+									"# {}_W*\n".format(systemName)
 									+ "* System: {}\n".format(systemName)
 									+ "* Path: `{}`\n".format(cDir)
 									+ "# Components\n"
@@ -177,7 +177,7 @@ def main():
 
 								# Index title
 								index.addToIndex(cDir, "0_T",
-									"# {}_W*\n".format(systemName)
+									"# {}_DT*\n".format(systemName)
 									+ "* System: {}\n".format(systemName)
 									+ "* Path: `{}`\n".format(cDir)
 									+ "# Components\n"
@@ -203,6 +203,51 @@ def main():
 
 								executor.submit(funcs.compileScad,
 									"drawer_tray",
+									cDir, fName, copy.deepcopy(s.targetReleases),
+									copy.deepcopy(s.config), systemConfig
+								)
+
+					# Shelvves
+					for s.shelfVersion in config.shelfVersions:
+						with sg:
+							for key, value in s.shelfVersion["config"].items():
+								s.config[key] = value
+
+							shelfVersionID = s.shelfVersion["id"]
+
+							if system.shouldGenerateComponent(s, "shelf"):
+								cDir = F"{outputDir}/{systemDirName}/S__shelves"
+								cName = F"{systemName}_S{unitCountStr}"
+								fName = F"{systemName}_S{unitCountStr}{shelfVersionID}"
+
+								# Index title
+								index.addToIndex(cDir, "0_T",
+									"# {}_S*\n".format(systemName)
+									+ "* System: {}\n".format(systemName)
+									+ "* Path: `{}`\n".format(cDir)
+									+ "# Components\n"
+									)
+
+								# Index common
+								index.addToIndex(cDir, "1#/{}#/0_T".format(cName),
+									"## {}\n".format(cName)
+									+ "* Unit count: {}\n".format(unitCountText)
+									+ "* Component size: {}\n\n".format(componentSizeText)
+									)
+
+								# Index item
+								index.addToIndex(cDir, "1#/{}#/1_COLS/{}".format(cName, fName), [
+									"**{}**".format(fName),
+									s.shelfVersion["text"],
+									index.releasesListStr(s, "", ""),
+									"![preview](png/{}.png)".format(fName)
+									])
+
+								# Spacing after
+								index.addToIndex(cDir, "1#/{}#/2_T".format(cName), "\n---\n")
+
+								executor.submit(funcs.compileScad,
+									"shelf",
 									cDir, fName, copy.deepcopy(s.targetReleases),
 									copy.deepcopy(s.config), systemConfig
 								)

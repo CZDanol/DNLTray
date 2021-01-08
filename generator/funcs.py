@@ -87,7 +87,7 @@ def compileScad(template : str, baseDir : str, fileName : str, releases, cfg : d
 		scadDir = F"{baseDir}/scad"
 
 		scadFileName = F"{scadDir}/{fileName}.scad"
-		stlFileName = F"{baseDir}/stl/{fileName}.stl"
+		stlFileName = F"{baseDir}/stl/{fileName}.3mf"
 		previewFileName = F"{baseDir}/png/{fileName}.png"
 
 		template = os.path.relpath(F"templates/{template}.scad", scadDir)

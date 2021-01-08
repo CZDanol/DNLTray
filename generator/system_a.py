@@ -17,7 +17,7 @@ class System_A(systems.System):
 		if cargs.args.allCombinations:
 			return True
 
-		if t == "tray":
+		if t == "tray" or t == "shelf":
 			hUnitCounts = [2, 3, 4, 6, 8]
 			vUnitCounts = [1, 2, 3, 4, 6, 8]
 

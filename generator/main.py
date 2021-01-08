@@ -100,6 +100,7 @@ def main():
 				+ "Unit size: {} x {} x {} mm\n".format(s.config["unitSize"][0], s.config["unitSize"][1], s.config["unitSize"][2])
 				+ "## Directories\n"
 				+ "* [Trays](T__trays/): Standard bins you put things to from top\n"
+				+ "* [Shelves](S__shelves/): Trays without the front side.\n"
 				+ "* [Drawers](D__drawers/): Well, drawers\n"
 				+ "* [Drawer trays](DT__drawer_trays/): Slots you put the drawers to, basically drawer slots\n"
 				+ "* [Walls](W__walls/): Support you can hang the trays onto.\n"

@@ -233,5 +233,7 @@ defaultConfig = {
 	"wallWidth": 2,
 
 	# Diameter of the hole for a screw
-	"screwHoleDiameter": 4,
+	"wallBottomScrewHoleDiameter": 4,
+	"wallTopScrewHoleDiameter": 8,
+
 }

@@ -77,7 +77,7 @@ module horizontalMountKickIn(a) {
 
 	dp = horizontalMountDepth;
 
-	rotate([90, 0, 0]) linear_extrude(dUnitSize, center=true) polygon([[0, 0.5], [0, 0], [dp, 0], [dp, horizontalMountKickIn]]);
+	rotate([90, 0, 0]) linear_extrude((horizontalMountExtWidth + horizontalMountConenctorDistance + 0.005) * 2, center=true) polygon([[0, -0.005], [dp + 0.005, -0.005], [dp + 0.005, horizontalMountKickIn]]);
 }
 module horizontalMount(a, inclKickIn = false) {
 	d = rotatedDimensions[a];
@@ -99,7 +99,7 @@ module horizontalMount(a, inclKickIn = false) {
 			}
 
 			if(inclKickIn)
-				horizontalMountKickIn(a);
+				translate([horizontalMountDepth, 0, 0]) mirror([1,0,0]) horizontalMountKickIn(a);
 		}
 
 		// Kick in
@@ -107,7 +107,7 @@ module horizontalMount(a, inclKickIn = false) {
 			horizontalMountKickIn(a);
 
 		// Kick out
-		translate([0, 0, unitSize[2] / 2]) rotate([90, 0, 0]) linear_extrude(dUnitSize, center=true) polygon([[0, 0], [dp, 0], [dp, -horizontalMountKickOut]]);
+		translate([0, 0, unitSize[2] / 2]) rotate([90, 0, 0]) linear_extrude(dUnitSize, center=true) polygon([[0, 0.005], [dp + 0.005, 0.005], [dp + 0.005, -horizontalMountKickOut]]);
 	}
 }
 
@@ -201,15 +201,22 @@ module labelHolder() {
 	}
 }
 
-module modelLabel() {
+module modelLabel(singleLine = false) {
 	sz = 3.5;
 	spc = 5.5;
 	fnt = "Quantico";
 	fn = 0;
 
+	brand = "DNLTray";
+
 	rotate([0, 180, 0]) linear_extrude(0.6, center=true) {
-		translate([0, 0, 0]) text(modelName, size=sz, valign="top", font=fnt, $fn=fn);
-		translate([0, -spc, 0]) text(version, size=sz, valign="top", font=fnt, $fn=fn);
-		translate([0, -spc*2, 0]) text("DNLTray", size=sz, valign="top", font=fnt, $fn=fn);
+		if(singleLine) {
+			text(str(modelName, "  ", version, "  ", brand), size=sz, valign="top", font=fnt, $fn=fn);
+		}
+		else {
+			translate([0, 0, 0]) text(modelName, size=sz, valign="top", font=fnt, $fn=fn);
+			translate([0, -spc, 0]) text(version, size=sz, valign="top", font=fnt, $fn=fn);
+			translate([0, -spc*2, 0]) text(brand, size=sz, valign="top", font=fnt, $fn=fn);
+		}
 	}
 }

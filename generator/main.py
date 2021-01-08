@@ -101,7 +101,8 @@ def main():
 				+ "## Directories\n"
 				+ "* [Trays](T__trays/): Standard bins you put things to from top\n"
 				+ "* [Drawers](D__drawers/): Well, drawers\n"
-				+ "* [Drawer trays](W__drawer_trays/): Trays you put the drawers to, basically drawer slots\n"
+				+ "* [Drawer trays](DT__drawer_trays/): Slots you put the drawers to, basically drawer slots\n"
+				+ "* [Walls](W__walls/): Support you can hang the trays onto.\n"
 				)
 
 			index.addToIndex(
@@ -123,12 +124,12 @@ def main():
 					unitCountStr = F"{ucX}{ucY}{ucZ}"
 					unitCountDirStr = "{}{}{}__{}x{}x{}_units__{}x{}x{}_mm".format(ucX, ucY, ucZ, ucX, ucY, ucZ, s.componentSize[0], s.componentSize[1], s.componentSize[2])
 
-					if ucY == 1:
+					if ucY == 0:
 						with sg:
 							if system.shouldGenerateComponent(s, "wall"):
-								cDir = F"{outputDir}/{systemDirName}/L__walls"
-								cName = F"{systemName}_L{unitCountStr}"
-								fName = F"{systemName}_L{unitCountStr}"
+								cDir = F"{outputDir}/{systemDirName}/W__walls"
+								cName = F"{systemName}_W{unitCountStr}"
+								fName = F"{systemName}_W{unitCountStr}"
 
 								# Index title
 								index.addToIndex(cDir, "0_T",
@@ -170,9 +171,9 @@ def main():
 							drawerTrayVersionID = s.drawerTrayVersion["id"]
 
 							if system.shouldGenerateComponent(s, "drawerTray"):
-								cDir = F"{outputDir}/{systemDirName}/W__drawer_trays"
-								cName = F"{systemName}_W{unitCountStr}"
-								fName = F"{systemName}_W{unitCountStr}{drawerTrayVersionID}"
+								cDir = F"{outputDir}/{systemDirName}/DT__drawer_trays"
+								cName = F"{systemName}_DT{unitCountStr}"
+								fName = F"{systemName}_DT{unitCountStr}{drawerTrayVersionID}"
 
 								# Index title
 								index.addToIndex(cDir, "0_T",

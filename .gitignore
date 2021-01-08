@@ -1,5 +1,4 @@
-models/**/*.stl
-models_*/
+models/
 generator/__pycache__/
 releases/
 loc_*

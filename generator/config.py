@@ -75,7 +75,7 @@ defaultConfig = {
 	# =======================
 
 	# ID of the current version
-	"version": "v0.9.1",
+	"version": "v0.9.2",
 
 	# Count of units in the tray, is dynamically changed
 	"unitCount": [0, 0, 0],

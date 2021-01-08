@@ -198,7 +198,7 @@ module labelHolder() {
 				square([labelWidth + labelHolderWidth * 2, labelHeight], center=true);
 				translate([0, -labelHolderInset / 2]) square([labelWidth - labelHolderInset * 2, labelHeight - labelHolderInset], center=true);
 			}
-			linear_extrude(labelDepth) square([labelWidth, labelHeight], center=true);
+			translate([0.005, 0, -0.005]) linear_extrude(labelDepth + 0.005) square([labelWidth, labelHeight + 0.01], center=true);
 		}
 		translate([0, labelHeight/2, 0]) rotate([0, 90, 0]) linear_extrude(labelWidth + labelHolderWidth * 2, center=true) polygon([[0, 0], [-labelHolderWidth - labelDepth, 0], [0, labelHolderRamp]]);
 	}

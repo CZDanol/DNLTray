@@ -113,10 +113,9 @@ def main():
 				)
 
 			systemConfig = s.config
-			for ucX, ucY, ucZ in itertools.product(range(8), range(8), range(8)):
+			for ucX, ucY, ucZ in itertools.product(range(9), range(9), range(17)):
 				with sg:
 					s.config["unitCount"] = [ucX, ucY, ucZ]
-
 					s.componentSize = [s.config["unitSize"][0] * ucX, s.config["unitSize"][1] * ucY, s.config["unitSize"][2] * ucZ]
 					componentSizeText = "(WxLxH) {} x {} x {} mm".format(s.componentSize[0], s.componentSize[1], s.componentSize[2])
 

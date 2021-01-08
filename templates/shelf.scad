@@ -8,6 +8,9 @@ rotate([0, 0, 180]) {
 			cornerReinforcements(skipFront=true);
 			horizontalMounts(skipFront=true);
 			verticalMountsIncl(skipTopFront=true);
+
+			if(shelfRail)
+				translate([0, adjComponentSize[1]/2, unitSize[2] - 2]) labelHolder();
 		}
 
 		verticalMountsExcl();

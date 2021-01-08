@@ -30,8 +30,16 @@ class System_A(systems.System):
 			if uc[2] not in vUnitCounts:
 				return False
 
-			if uc[2] in [1, 2, 4, 6, 8] and uc[0:2] in [[2, 2], [3, 3], [4, 2], [4, 4], [6, 2], [6, 4], [6, 6], [8, 2], [8, 4], [8, 6], [8, 8]]:
+			releaseCriteria = (
+				uc[2] in [1, 2, 4, 6, 8]
+				and uc[0:2] in [[2, 2], [3, 3], [4, 2], [4, 4], [6, 2], [6, 4], [6, 6], [8, 2], [8, 4], [8, 6], [8, 8]]
+			)
+
+			if t == "tray" and releaseCriteria:
 				s.targetReleases += ["trays"]
+
+			if t == "shelf" and releaseCriteria:
+				s.targetReleases += ["shelves"]
 
 		elif t == "drawerTray" or t == "drawer":
 			if uc[0] not in [2, 3, 4]:
@@ -53,10 +61,10 @@ class System_A(systems.System):
 			if uc[0] not in [1, 2, 3, 4, 6, 8]:
 				return False
 
-			if uc[2] not in [1, 2, 4, 6, 8]:
+			if uc[2] not in [1, 2, 4, 6, 8, 12, 16]:
 				return False
 
-			s.targetReleases += ["drawers", "trays"]
+			s.targetReleases += ["drawers", "trays", "shelves"]
 
 		else:
 			raise Exception("Not supported: " + t)

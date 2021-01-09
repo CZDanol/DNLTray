@@ -1,5 +1,6 @@
-models/**/.3mf
+models/**/*.3mf
+models/**/*.stl
 generator/__pycache__/
-releases/
+releases*/
 loc_*
 .vs/

@@ -9,6 +9,7 @@
 | **A_DT221** | **A_DT221L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT221.png) | ![preview](png/A_DT221L.png) | 
 
 
@@ -32,6 +33,7 @@
 | **A_DT241** | **A_DT241L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT241.png) | ![preview](png/A_DT241L.png) | 
 
 
@@ -55,6 +57,7 @@
 | **A_DT261** | **A_DT261L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT261.png) | ![preview](png/A_DT261L.png) | 
 
 
@@ -66,6 +69,7 @@
 | **A_DT262** | **A_DT262L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT262.png) | ![preview](png/A_DT262L.png) | 
 
 
@@ -77,6 +81,7 @@
 | **A_DT321** | **A_DT321L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT321.png) | ![preview](png/A_DT321L.png) | 
 
 
@@ -88,6 +93,7 @@
 | **A_DT322** | **A_DT322L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT322.png) | ![preview](png/A_DT322L.png) | 
 
 
@@ -99,6 +105,7 @@
 | **A_DT341** | **A_DT341L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT341.png) | ![preview](png/A_DT341L.png) | 
 
 
@@ -122,6 +129,7 @@
 | **A_DT361** | **A_DT361L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT361.png) | ![preview](png/A_DT361L.png) | 
 
 
@@ -133,6 +141,7 @@
 | **A_DT362** | **A_DT362L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT362.png) | ![preview](png/A_DT362L.png) | 
 
 
@@ -144,6 +153,7 @@
 | **A_DT421** | **A_DT421L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT421.png) | ![preview](png/A_DT421L.png) | 
 
 
@@ -167,6 +177,7 @@
 | **A_DT424** | **A_DT424L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT424.png) | ![preview](png/A_DT424L.png) | 
 
 
@@ -178,6 +189,7 @@
 | **A_DT441** | **A_DT441L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT441.png) | ![preview](png/A_DT441L.png) | 
 
 
@@ -189,6 +201,7 @@
 | **A_DT442** | **A_DT442L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT442.png) | ![preview](png/A_DT442L.png) | 
 
 
@@ -212,6 +225,7 @@
 | **A_DT461** | **A_DT461L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT461.png) | ![preview](png/A_DT461L.png) | 
 
 
@@ -223,6 +237,7 @@
 | **A_DT462** | **A_DT462L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT462.png) | ![preview](png/A_DT462L.png) | 
 
 
@@ -234,6 +249,7 @@
 | **A_DT464** | **A_DT464L** | 
 | --- | --- | 
 |  | Without floor | 
+| STL: compile manually | STL: compile manually | 
 | ![preview](png/A_DT464.png) | ![preview](png/A_DT464L.png) | 
 
 

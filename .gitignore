@@ -1,5 +1,5 @@
 models/
 generator/__pycache__/
-releases/
+releases*/
 loc_*
 .vs/

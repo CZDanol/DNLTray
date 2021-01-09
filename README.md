@@ -1,4 +1,4 @@
-# DNLTray - Danol's ultimaze organizer system
+# DNLTray - Danol's ultimate organizer system
 ![](etc/render_withLabels.png)
 
 **WORK IN PROGRESS**

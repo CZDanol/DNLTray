@@ -1,5 +1,5 @@
 # DNLTray - Danol's ultimaze organizer system
-![](etc/img1.jpg)
+![](etc/render.png)
 
 **WORK IN PROGRESS**
 

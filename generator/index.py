@@ -71,7 +71,7 @@ def genIndexScope(data):
 
 def releasesListStr(s, prefix = "", suffix = ""):
 	if not s.targetReleases:
-		return "STL: compile manually"
+		return "STL: [compile manually](https://github.com/CZDanol/DNLTray#how-to-compile)"
 
 	return "{}STL: {}{}".format(prefix, ", ".join("[{}](https://github.com/CZDanol/DNLTray/releases/latest/download/DNLTray_{}_{}.zip)".format(rel, s.system.name, rel) for rel in s.targetReleases), suffix)
 

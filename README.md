@@ -54,6 +54,11 @@ For example:
 * Standard 0.2mm layers
 * No supports
 
+# How to compile
+A lot of the models STL files can be downloaded in a release zip. Because compiling all the models takes a lot of time (and the zips would be way too big), I'm only putting a selection of the STLs to the releases.
+
+You can however easily compile any model in the repository manually. Simply download this repository (source codes), locate your required `.scad` file in the `models/` folder, open in it OpenSCAD, compile it and export it.
+
 # License
 - Free for non-commercial use
 - If you intend to use the designs commercially, please contact me to negotiate a commission.
